@@ -15,7 +15,7 @@ Kitle kaynak usulüyle (crowdsourcing) yani herkesin katkısı ile zenginleşece
 
 Projenin ilk aşaması, hocamızın vefatının hemen akabinde, 2021 yılına kadar olan verileri kapsayacak şekilde Digital Ottoman Studies ekibi (Yunus Uğur, Fatma Aladağ, Büşranur Bekman, Beyza Topuz Demir, Serpil Özcan, Emine Öztaner, Özge Eda Kaya) tarafından hazırlanmıştır. Bu süreç, Fehmi Yılmaz, Kahraman Şakul, Abdulhamit Kırmızı, Serhat Aslaner, Kenan Yıldız ve İsmail Hakkı Kadı gibi kıymetli isimlerin katkılarıyla ikmal edilmiştir.
 
-2021 sonrası veriler ile eksik kalan kısımların derlenmesi ve mevcut web portalına aktarılması süreci ise Marmara Üniversitesi Mehmet Genç İktisat Tarihi Çalışmaları Araştırma ve Uygulama Merkezi ile Dijital Beşeri Bilimler Uygulama ve Araştırma Merkezi ekiplerince (Fehmi Yılmaz, Yunus Uğur, Berk Özkaya, Necmettin Semiz, Sabri Garip,  Mehmet Ali Çiftçi, İbrahim Kaplan, Selin Hatoğlu, Hamdi Sefa Keskin, Enes Hasmesçi, Hasan Ben) yürütülmektedir. 
+2021 sonrası veriler ile eksik kalan kısımların derlenmesi ve mevcut web portalına aktarılması süreci ise Marmara Üniversitesi Mehmet Genç İktisat Tarihi Çalışmaları Araştırma ve Uygulama Merkezi ile Dijital Beşeri Bilimler Uygulama ve Araştırma Merkezi ekiplerince (Fehmi Yılmaz, Yunus Uğur, Berk Özkaya, Necmettin Semiz, Eren Ergüven, Sabri Garip,  Mehmet Ali Çiftçi, İbrahim Kaplan, Selin Hatoğlu, Hamdi Sefa Keskin, Enes Hasmesçi, Hasan Ben) yürütülmektedir. 
 
 Bu sürece dahil olan tüm isimleri kısaca 'Mehmet Genç Gönüllüleri' olarak adlandırıyoruz. Şimdiye kadar emeği geçen ve bundan sonra da katkı sunacak olan tüm Mehmet Genç Gönüllülerine şükranlarımızla...
 

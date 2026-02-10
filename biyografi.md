@@ -80,6 +80,10 @@ Mehmet Genç’e araştırmaları esnasında maddi destek sağlayan bir diğer i
 
 Mehmet Genç 18 Mart 2021 tarihinde 87 yaşında iken vefat etmiştir. Fatih Camii Haziresi’nde medfundur.
 
+**Yayınlar**
+
+Hocamızın yayınlarına (kitap, makale, ansiklopedi maddesi) site içerisinden şu linke tıklayarak ulaşabilirsiniz: https://hacyolundabirkarinca.github.io/koleksiyonum/browse.html#Eserleri
+
 **Ödüller**
 
 Türkçe, İngilizce, Fransızca ve Yunanca yayımlanmış çok sayıda makale yazdı. 2000 yılında, tebliğ ve makalelerinin önemli bir bölümü bazı ilavelerle Osmanlı İmparatorluğunda Devlet ve Ekonomi başlıklı bir kitapta yayımlandı ve bu kitap ile Türkiye Yazarlar Birliği tarafından fikir dalında ödüle layık görüldü. Genç, 2001 yılında aynı kitap ile Aydın Doğan Vakfı özel ödülünü almaya hak kazandı ise de bu ödülü kabul etmemiştir. 2015 yılında Cumhurbaşkanlığı Kültür ve Sanat Büyük Ödülleri kapsamında, sosyal bilimler ve tarih alanında ödüllendirildi. Mehmet Genç, 2015 yılında sosyal ve beşerî bilimler kategorisinde Türkiye Bilimler Akademisi (TÜBA) Uluslararası Akademi Ödülü almıştır.

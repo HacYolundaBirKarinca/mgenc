@@ -25,4 +25,4 @@ sass:
   style: compressed
 
 # Konu bulutunda görünmesi istenmeyen kelimeler
-subject_stopwords: "MGenc Gonullusu"
+subject_stopwords: "Mehmet Genç Gönüllüsü"

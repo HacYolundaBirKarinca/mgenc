@@ -82,7 +82,7 @@ Mehmet Genç 18 Mart 2021 tarihinde 87 yaşında iken vefat etmiştir. Fatih Cam
 
 **Yayınlar**
 
-Hocamızın yayınlarına (kitap, makale, ansiklopedi maddesi) site içerisinden şu linke tıklayarak ulaşabilirsiniz: [Mehmet Genç Eserleri](https://hacyolundabirkarinca.github.io/koleksiyonum/browse.html#Eserleri)</small>
+Hocamızın yayınlarına (kitap, makale, ansiklopedi maddesi) site içerisinden şu linke tıklayarak ulaşabilirsiniz: [Mehmet Genç Eserleri](https://hacyolundabirkarinca.github.io/koleksiyonum/browse.html#Eserleri)
 
 **Ödüller**
 
@@ -105,7 +105,7 @@ Mehmet Genç, American Research Institute in Turkey (ARIT) yönetim kurulu üyes
 
 **Kütüphanesi ve Arşivi**
 
-Mehmet Genç'in yaklaşık 60 yılda bir araya getirdiği, 15 bin ciltlik şahsi araştırma kütüphanesi ve arşiv dosyaları ailesi tarafından Cumhurbaşkanlığı Millet Kütüphanesi'ne bağışlanmıştır. Tıklayınız: [Mehmet Genç Koleksiyonu](https://mk.gov.tr/icerik/detay/mehmet-genc-koleksiyonu-1?pagenum=2)</small>
+Mehmet Genç'in yaklaşık 60 yılda bir araya getirdiği, 15 bin ciltlik şahsi araştırma kütüphanesi ve arşiv dosyaları ailesi tarafından Cumhurbaşkanlığı Millet Kütüphanesi'ne bağışlanmıştır. Tıklayınız: [Mehmet Genç Koleksiyonu](https://mk.gov.tr/icerik/detay/mehmet-genc-koleksiyonu-1?pagenum=2)
 
 Genç’in Osmanlı arşivlerinden araştırmalarıyla alakalı topladığı vesikalar ve bu vesikalara dair tuttuğu notları konularına göre ayrılmış klasörler içinde bulunmaktadır. Söz konusu bu arşiv Cumhurbaşkanlığı ile yapılan protokol gereği öncelikle dijital hale getirilecek, katalog çalışması yapılacak ve ardından araştırmacıların hizmetine sunulacaktır.
 

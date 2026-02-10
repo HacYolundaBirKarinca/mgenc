@@ -13,15 +13,17 @@ Bu çalışma, hocamız Mehmet Genç'in çalışmalarını, faaliyetlerini ve ha
 
 Kitle kaynak usulüyle (crowdsourcing) yani herkesin katkısı ile zenginleşecek olan bu portal yaşayan bir proje olarak tasarlanmıştır. Çalışmalarımız devam etmekte olup, mevcut eksiklikler sizlerin değerli katkılarıyla tamamlanacaktır.
 
-Projenin ilk aşaması, hocamızın vefatının hemen akabinde, 2021 yılına kadar olan verileri kapsayacak şekilde Digital Ottoman Studies ekibi (Yunus Uğur, Fatma Aladağ, Büşranur Bekman, Beyza Topuz Demir, Serpil Özcan, Emine Öztaner, Özge Eda Kaya) tarafından hazırlanmıştır. Süreç, Fehmi Yılmaz, Kahraman Şakul, Abdulhamit Kırmızı, Serhat Aslaner, Kenan Yıldız ve İsmail Hakkı Kadı gibi kıymetli isimlerin katkılarıyla ikmal edilmiştir.
+Projenin ilk aşaması, hocamızın vefatının hemen akabinde, 2021 yılına kadar olan verileri kapsayacak şekilde Digital Ottoman Studies ekibi (Yunus Uğur, Fatma Aladağ, Büşranur Bekman, Beyza Topuz Demir, Serpil Özcan, Emine Öztaner, Özge Eda Kaya) tarafından hazırlanmıştır. Bu süreç, Fehmi Yılmaz, Kahraman Şakul, Abdulhamit Kırmızı, Serhat Aslaner, Kenan Yıldız ve İsmail Hakkı Kadı gibi kıymetli isimlerin katkılarıyla ikmal edilmiştir.
 
-2021 sonrası veriler ile eksik kalan kısımların derlenmesi ve web portalına aktarılması süreci ise Marmara Üniversitesi Mehmet Genç İktisat Tarihi Çalışmaları Araştırma ve Uygulama Merkezi ile Dijital Beşeri Bilimler Uygulama ve Araştırma Merkezi ekiplerince yürütülmektedir.
+2021 sonrası veriler ile eksik kalan kısımların derlenmesi ve mevcut web portalına aktarılması süreci ise Marmara Üniversitesi Mehmet Genç İktisat Tarihi Çalışmaları Araştırma ve Uygulama Merkezi ile Dijital Beşeri Bilimler Uygulama ve Araştırma Merkezi ekiplerince (Fehmi Yılmaz, Yunus Uğur, Berk Özkaya, Necmettin Semiz, Sabri Garip,  Mehmet Ali Çiftçi, İbrahim Kaplan, Selin Hatoğlu, Hamdi Sefa Keskin, Enes Hasmesçi, Hasan Ben) yürütülmektedir. 
 
 Bu sürece dahil olan tüm isimleri kısaca 'Mehmet Genç Gönüllüleri' olarak adlandırıyoruz. Şimdiye kadar emeği geçen ve bundan sonra da katkı sunacak olan tüm Mehmet Genç Gönüllülerine şükranlarımızla...
 
 İletişim ve Katkı: 
-Mehmet Hoca ile ilgili hatıra, belge veya görsel arşivinizi paylaşmak isterseniz hacyolundabirkarinca@gmail.com adresi üzerinden bize ulaşabilirsiniz.
-Web sitesindeki verilerle ilgili düzeltme önerilerinizi veya görüşlerinizi de aynı e-posta adresi üzerinden iletebilirsiniz; bildirimleriniz en kısa sürede değerlendirilerek sisteme yansıtılacaktır. 
+Mehmet Hoca ile ilgili hatıra, belge veya görsel arşivinizi/begenizi paylaşmak isterseniz [PAYLAŞ](https://hacyolundabirkarinca.github.io/koleksiyonum/katki.html) menüsünden bize ulaştırabilirsiniz.
+
+Web sitesindeki verilerle ilgili düzeltme önerilerinizi veya görüşlerinizi de aynı yerden iletebilirsiniz; bildirimleriniz en kısa sürede değerlendirilerek sisteme yansıtılacaktır. 
+
 İş birliğiniz ve katkılarınız için şimdiden teşekkür ederiz.
 
 ---

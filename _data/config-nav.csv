@@ -1,3 +1,7 @@
+field,display_name,btn
+top_category,Ana Kategori,true
+sub_category,Alt Kategori,true
+subject,Konular,true
 display_name,stub,dropdown_parent
 AnaSayfa,/
 Hayatı,biyografi.html,,

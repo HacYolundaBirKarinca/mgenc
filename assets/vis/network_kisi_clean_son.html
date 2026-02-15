@@ -1,0 +1,358 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script>function neighbourhoodHighlight(params) {
+  // console.log("in nieghbourhoodhighlight");
+  allNodes = nodes.get({ returnType: "Object" });
+  // originalNodes = JSON.parse(JSON.stringify(allNodes));
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    highlightActive = true;
+    var i, j;
+    var selectedNode = params.nodes[0];
+    var degrees = 2;
+
+    // mark all nodes as hard to read.
+    for (let nodeId in allNodes) {
+      // nodeColors[nodeId] = allNodes[nodeId].color;
+      allNodes[nodeId].color = "rgba(200,200,200,0.5)";
+      if (allNodes[nodeId].hiddenLabel === undefined) {
+        allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+    var connectedNodes = network.getConnectedNodes(selectedNode);
+    var allConnectedNodes = [];
+
+    // get the second degree nodes
+    for (i = 1; i < degrees; i++) {
+      for (j = 0; j < connectedNodes.length; j++) {
+        allConnectedNodes = allConnectedNodes.concat(
+          network.getConnectedNodes(connectedNodes[j])
+        );
+      }
+    }
+
+    // all second degree nodes get a different color and their label back
+    for (i = 0; i < allConnectedNodes.length; i++) {
+      // allNodes[allConnectedNodes[i]].color = "pink";
+      allNodes[allConnectedNodes[i]].color = "rgba(150,150,150,0.75)";
+      if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[allConnectedNodes[i]].label =
+          allNodes[allConnectedNodes[i]].hiddenLabel;
+        allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // all first degree nodes get their own color and their label back
+    for (i = 0; i < connectedNodes.length; i++) {
+      // allNodes[connectedNodes[i]].color = undefined;
+      allNodes[connectedNodes[i]].color = nodeColors[connectedNodes[i]];
+      if (allNodes[connectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[connectedNodes[i]].label =
+          allNodes[connectedNodes[i]].hiddenLabel;
+        allNodes[connectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // the main node gets its own color and its label back.
+    // allNodes[selectedNode].color = undefined;
+    allNodes[selectedNode].color = nodeColors[selectedNode];
+    if (allNodes[selectedNode].hiddenLabel !== undefined) {
+      allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
+      allNodes[selectedNode].hiddenLabel = undefined;
+    }
+  } else if (highlightActive === true) {
+    // console.log("highlightActive was true");
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      // allNodes[nodeId].color = "purple";
+      allNodes[nodeId].color = nodeColors[nodeId];
+      // delete allNodes[nodeId].color;
+      if (allNodes[nodeId].hiddenLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+        allNodes[nodeId].hiddenLabel = undefined;
+      }
+    }
+    highlightActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    // console.log("Nothing was selected");
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        // allNodes[nodeId].color = {};
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function filterHighlight(params) {
+  allNodes = nodes.get({ returnType: "Object" });
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    filterActive = true;
+    let selectedNodes = params.nodes;
+
+    // hiding all nodes and saving the label
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = true;
+      if (allNodes[nodeId].savedLabel === undefined) {
+        allNodes[nodeId].savedLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+
+    for (let i=0; i < selectedNodes.length; i++) {
+      allNodes[selectedNodes[i]].hidden = false;
+      if (allNodes[selectedNodes[i]].savedLabel !== undefined) {
+        allNodes[selectedNodes[i]].label = allNodes[selectedNodes[i]].savedLabel;
+        allNodes[selectedNodes[i]].savedLabel = undefined;
+      }
+    }
+
+  } else if (filterActive === true) {
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = false;
+      if (allNodes[nodeId].savedLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].savedLabel;
+        allNodes[nodeId].savedLabel = undefined;
+      }
+    }
+    filterActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function selectNode(nodes) {
+  network.selectNodes(nodes);
+  neighbourhoodHighlight({ nodes: nodes });
+  return nodes;
+}
+
+function selectNodes(nodes) {
+  network.selectNodes(nodes);
+  filterHighlight({nodes: nodes});
+  return nodes;
+}
+
+function highlightFilter(filter) {
+  let selectedNodes = []
+  let selectedProp = filter['property']
+  if (filter['item'] === 'node') {
+    let allNodes = nodes.get({ returnType: "Object" });
+    for (let nodeId in allNodes) {
+      if (allNodes[nodeId][selectedProp] && filter['value'].includes((allNodes[nodeId][selectedProp]).toString())) {
+        selectedNodes.push(nodeId)
+      }
+    }
+  }
+  else if (filter['item'] === 'edge'){
+    let allEdges = edges.get({returnType: 'object'});
+    // check if the selected property exists for selected edge and select the nodes connected to the edge
+    for (let edge in allEdges) {
+      if (allEdges[edge][selectedProp] && filter['value'].includes((allEdges[edge][selectedProp]).toString())) {
+        selectedNodes.push(allEdges[edge]['from'])
+        selectedNodes.push(allEdges[edge]['to'])
+      }
+    }
+  }
+  selectNodes(selectedNodes)
+}</script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+            
+            
+            
+            
+            
+
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#800000", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7", "label": "Mehmet Gen\u00e7", "shape": "dot", "size": 60}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Kahraman \u015eakul", "label": "Kahraman \u015eakul", "shape": "dot", "size": 84, "title": "23 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "\u0130ktisadi Sistem", "label": "\u0130ktisadi Sistem", "shape": "dot", "size": 51, "title": "12 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Erol \u00d6zvar", "label": "Erol \u00d6zvar", "shape": "dot", "size": 48, "title": "11 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Mehmet \u0130p\u015firli", "label": "Mehmet \u0130p\u015firli", "shape": "dot", "size": 48, "title": "11 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Feridun Emecen", "label": "Feridun Emecen", "shape": "dot", "size": 45, "title": "10 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Yunus U\u011fur", "label": "Yunus U\u011fur", "shape": "dot", "size": 39, "title": "8 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "\u00d6zer Ergen\u00e7", "label": "\u00d6zer Ergen\u00e7", "shape": "dot", "size": 33, "title": "6 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Mustafa \u00d6zel", "label": "Mustafa \u00d6zel", "shape": "dot", "size": 27, "title": "4 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Erol G\u00fcng\u00f6r", "label": "Erol G\u00fcng\u00f6r", "shape": "dot", "size": 27, "title": "4 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Be\u015fir Ayvazo\u011flu", "label": "Be\u015fir Ayvazo\u011flu", "shape": "dot", "size": 27, "title": "4 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Fehmi Y\u0131lmaz", "label": "Fehmi Y\u0131lmaz", "shape": "dot", "size": 24, "title": "3 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Fikret Y\u0131lmaz", "label": "Fikret Y\u0131lmaz", "shape": "dot", "size": 24, "title": "3 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Abdullah Mesud K\u00fc\u00e7\u00fckkalay", "label": "Abdullah Mesud K\u00fc\u00e7\u00fckkalay", "shape": "dot", "size": 24, "title": "3 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Engin Deniz Akarl\u0131", "label": "Engin Deniz Akarl\u0131", "shape": "dot", "size": 24, "title": "3 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Recep Tayyip Erdo\u011fan", "label": "Recep Tayyip Erdo\u011fan", "shape": "dot", "size": 24, "title": "3 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "\u0130smail Er\u00fcnsal", "label": "\u0130smail Er\u00fcnsal", "shape": "dot", "size": 24, "title": "3 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "\u00d6mer L\u00fctfi Barkan", "label": "\u00d6mer L\u00fctfi Barkan", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Kenan Y\u0131ld\u0131z", "label": "Kenan Y\u0131ld\u0131z", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Oktay \u00d6zel", "label": "Oktay \u00d6zel", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "H\u00fclya Canbakal", "label": "H\u00fclya Canbakal", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Suraiya Faroqhi", "label": "Suraiya Faroqhi", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Abdullah Tok", "label": "Abdullah Tok", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "\u0130hsan Fazl\u0131o\u011flu", "label": "\u0130hsan Fazl\u0131o\u011flu", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Yasin Aktay", "label": "Yasin Aktay", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Abdulhamit K\u0131rm\u0131z\u0131", "label": "Abdulhamit K\u0131rm\u0131z\u0131", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Co\u015fkun Y\u0131lmaz", "label": "Co\u015fkun Y\u0131lmaz", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Halit \u00d6zkan", "label": "Halit \u00d6zkan", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Z\u00fclfikar K\u00fcr\u00fcm", "label": "Z\u00fclfikar K\u00fcr\u00fcm", "shape": "dot", "size": 21, "title": "2 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Carlo M. Cipollo", "label": "Carlo M. Cipollo", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Mehmet S\u0131rr\u0131 Gezgin", "label": "Mehmet S\u0131rr\u0131 Gezgin", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Mehmed Niyazi", "label": "Mehmed Niyazi", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Ahmet Alkan", "label": "Ahmet Alkan", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Cemal Kafadar", "label": "Cemal Kafadar", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Ahmed Djevad", "label": "Ahmed Djevad", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Edhem Eldem", "label": "Edhem Eldem", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Ariel Salzmann", "label": "Ariel Salzmann", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Rhoads Murphey", "label": "Rhoads Murphey", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Mehmet \u00d6z", "label": "Mehmet \u00d6z", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Emrah Sefa G\u00fcrkan", "label": "Emrah Sefa G\u00fcrkan", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Polat Safi", "label": "Polat Safi", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Berat A\u00e7\u0131l", "label": "Berat A\u00e7\u0131l", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Hatice Aynur", "label": "Hatice Aynur", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Yavuz Sezer", "label": "Yavuz Sezer", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "\u0130smail Hakk\u0131 Kad\u0131", "label": "\u0130smail Hakk\u0131 Kad\u0131", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Hacer Topakta\u015f", "label": "Hacer Topakta\u015f", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "\u0130brahim Pa\u015fal\u0131", "label": "\u0130brahim Pa\u015fal\u0131", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Murathan K\u00fc\u00e7\u00fckali", "label": "Murathan K\u00fc\u00e7\u00fckali", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "\u0130lber Ortayl\u0131", "label": "\u0130lber Ortayl\u0131", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Kemal Karpat", "label": "Kemal Karpat", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}, {"color": "#D4AF37", "font": {"color": "black"}, "id": "Murat \u00c7izak\u00e7a", "label": "Murat \u00c7izak\u00e7a", "shape": "dot", "size": 18, "title": "1 \u0130li\u015fki"}]);
+                  edges = new vis.DataSet([{"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Kahraman \u015eakul", "width": 11.5}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "\u0130ktisadi Sistem", "width": 6.0}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Erol \u00d6zvar", "width": 5.5}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Mehmet \u0130p\u015firli", "width": 5.5}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Feridun Emecen", "width": 5.0}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Yunus U\u011fur", "width": 4.0}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "\u00d6zer Ergen\u00e7", "width": 3.0}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Mustafa \u00d6zel", "width": 2.0}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Erol G\u00fcng\u00f6r", "width": 2.0}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Be\u015fir Ayvazo\u011flu", "width": 2.0}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Fehmi Y\u0131lmaz", "width": 1.5}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Fikret Y\u0131lmaz", "width": 1.5}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Abdullah Mesud K\u00fc\u00e7\u00fckkalay", "width": 1.5}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Engin Deniz Akarl\u0131", "width": 1.5}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Recep Tayyip Erdo\u011fan", "width": 1.5}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "\u0130smail Er\u00fcnsal", "width": 1.5}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "\u00d6mer L\u00fctfi Barkan", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Kenan Y\u0131ld\u0131z", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Oktay \u00d6zel", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "H\u00fclya Canbakal", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Suraiya Faroqhi", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Abdullah Tok", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "\u0130hsan Fazl\u0131o\u011flu", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Yasin Aktay", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Abdulhamit K\u0131rm\u0131z\u0131", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Co\u015fkun Y\u0131lmaz", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Halit \u00d6zkan", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Z\u00fclfikar K\u00fcr\u00fcm", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Carlo M. Cipollo", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Mehmet S\u0131rr\u0131 Gezgin", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Mehmed Niyazi", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Ahmet Alkan", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Cemal Kafadar", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Ahmed Djevad", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Edhem Eldem", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Ariel Salzmann", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Rhoads Murphey", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Mehmet \u00d6z", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Emrah Sefa G\u00fcrkan", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Polat Safi", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Berat A\u00e7\u0131l", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Hatice Aynur", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Yavuz Sezer", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "\u0130smail Hakk\u0131 Kad\u0131", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Hacer Topakta\u015f", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "\u0130brahim Pa\u015fal\u0131", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Murathan K\u00fc\u00e7\u00fckali", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "\u0130lber Ortayl\u0131", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Kemal Karpat", "width": 1}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Murat \u00c7izak\u00e7a", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.01,
+            "damping": 0.4,
+            "gravitationalConstant": -60,
+            "springConstant": 0.08,
+            "springLength": 150
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

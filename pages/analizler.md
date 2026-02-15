@@ -82,7 +82,14 @@ Koleksiyonda yer alan ve **"Eserleri"** başlığı altında toplanan çalışma
 
 ## 4. Faaliyet İstatistikleri
 Mehmet Genç'in katıldığı konferans, söyleşi ve programların sayısal dağılımı.
-<iframe src="/koleksiyonum/assets/vis/network_faaliyet_ozet.html" ...></iframe>
+<div style="width: 100%; height: 800px; border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
+    <iframe src="/koleksiyonum/assets/vis/network_faaliyet_ozet.html" 
+            width="100%" 
+            height="100%" 
+            frameborder="0"
+            style="display: block;">
+    </iframe>
+</div>
 
 <br>
 *Not: Veriler koleksiyon metadata dosyasından otomatik olarak derlenmiştir.*

@@ -1,4 +1,19 @@
-/* 
-    Put your custom SCSS here! 
-    This allows you to override any CollectionBuilder or Bootstrap CSS without modifying the base theme files directly.
-*/
+// Hero image'ı küçültme ve hizalama
+.feature-image {
+  max-height: 300px; // Yüksekliği azalt
+  object-fit: cover; // Görselin oranını koru
+  object-position: top; // Üstten hizala
+}
+
+// Arka plan dokusu ekleme (örnek bir görsel URL'si ile )
+body {
+  background-image: url('/assets/img/ahmetfarukyilmaz.jpg'); // Kendi doku görselinizi kullanın
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+// Başlık fontlarını özelleştirme (eğer theme.yml yeterli gelmezse)
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif; // Başlıklar için farklı bir serif font
+  color: #800000; // Vişne Çürüğü
+}

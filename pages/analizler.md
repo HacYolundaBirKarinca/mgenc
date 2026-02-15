@@ -68,18 +68,21 @@ Mehmet Genç ile adı geçen üniversiteler, vakıflar, dernekler ve araştırma
 </div>
 
 ---
-
-## 3. Eserlerin Tasnifi
-Koleksiyonda yer alan ve **"Eserleri"** başlığı altında toplanan çalışmaların türlerine (Kitap, Makale, Konferans vb.) göre dağılımı.
+## 3. Yazılı Eserler Ağı
+Koleksiyonda yer alan ve **"Eserleri"** başlığı altında toplanan çalışmaların türlerine (Kitap, Makale, Ansiklopedi Maddesi vb.) göre dağılımı.
 
 <div style="width: 100%; height: 800px; border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
-    <iframe src="/koleksiyonum/assets/vis/network_eser_v2.html" 
+    <iframe src="/koleksiyonum/assets/vis/network_eser_detay.html" 
             width="100%" 
             height="100%" 
             frameborder="0"
             style="display: block;">
     </iframe>
 </div>
+
+## 4. Faaliyet İstatistikleri
+Mehmet Genç'in katıldığı konferans, söyleşi ve programların sayısal dağılımı.
+<iframe src="/koleksiyonum/assets/vis/network_faaliyet_ozet.html" ...></iframe>
 
 <br>
 *Not: Veriler koleksiyon metadata dosyasından otomatik olarak derlenmiştir.*

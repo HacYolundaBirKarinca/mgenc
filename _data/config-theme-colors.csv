@@ -1,5 +1,5 @@
 color_class,color
-primary,#800000     # Vişne Çürüğü / Bordo (Ana vurgu rengi)
-secondary,#D4AF37   # Altın Sarısı (Mat) (İkincil vurgu rengi)
-light,#FDFCF0       # Fildişi / Krem (Arka plan için kullanılabilir)
-dark,#2C3E50        # Mürekkep Siyahı (Metinler için kullanılabilir)
+primary,#800000
+secondary,#D4AF37
+light,#FDFCF0
+dark,#2C3E50

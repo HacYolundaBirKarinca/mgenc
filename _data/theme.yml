@@ -95,10 +95,10 @@ bootswatch: # leave blank or comment out for plain bootstrap
 
 # THEME FONTS
 base-font-size: 1.2em
-text-color: "#191919"
-link-color: "#0d6efd"
-base-font-family: # comment out for bootstrap defaults. e.g. Roboto
-font-cdn: # add font stylesheet, e.g. <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+text-color: "#2C3E50" # Mürekkep Siyahı
+link-color: "#800000" # Vişne Çürüğü
+base-font-family: "'Lora', serif" # Örnek serif font
+font-cdn: <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
 
 # THEME ICONS [optional!]
 # cb-gh uses Bootstrap Icons, https://icons.getbootstrap.com/

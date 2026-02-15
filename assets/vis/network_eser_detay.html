@@ -1,0 +1,358 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script>function neighbourhoodHighlight(params) {
+  // console.log("in nieghbourhoodhighlight");
+  allNodes = nodes.get({ returnType: "Object" });
+  // originalNodes = JSON.parse(JSON.stringify(allNodes));
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    highlightActive = true;
+    var i, j;
+    var selectedNode = params.nodes[0];
+    var degrees = 2;
+
+    // mark all nodes as hard to read.
+    for (let nodeId in allNodes) {
+      // nodeColors[nodeId] = allNodes[nodeId].color;
+      allNodes[nodeId].color = "rgba(200,200,200,0.5)";
+      if (allNodes[nodeId].hiddenLabel === undefined) {
+        allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+    var connectedNodes = network.getConnectedNodes(selectedNode);
+    var allConnectedNodes = [];
+
+    // get the second degree nodes
+    for (i = 1; i < degrees; i++) {
+      for (j = 0; j < connectedNodes.length; j++) {
+        allConnectedNodes = allConnectedNodes.concat(
+          network.getConnectedNodes(connectedNodes[j])
+        );
+      }
+    }
+
+    // all second degree nodes get a different color and their label back
+    for (i = 0; i < allConnectedNodes.length; i++) {
+      // allNodes[allConnectedNodes[i]].color = "pink";
+      allNodes[allConnectedNodes[i]].color = "rgba(150,150,150,0.75)";
+      if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[allConnectedNodes[i]].label =
+          allNodes[allConnectedNodes[i]].hiddenLabel;
+        allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // all first degree nodes get their own color and their label back
+    for (i = 0; i < connectedNodes.length; i++) {
+      // allNodes[connectedNodes[i]].color = undefined;
+      allNodes[connectedNodes[i]].color = nodeColors[connectedNodes[i]];
+      if (allNodes[connectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[connectedNodes[i]].label =
+          allNodes[connectedNodes[i]].hiddenLabel;
+        allNodes[connectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // the main node gets its own color and its label back.
+    // allNodes[selectedNode].color = undefined;
+    allNodes[selectedNode].color = nodeColors[selectedNode];
+    if (allNodes[selectedNode].hiddenLabel !== undefined) {
+      allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
+      allNodes[selectedNode].hiddenLabel = undefined;
+    }
+  } else if (highlightActive === true) {
+    // console.log("highlightActive was true");
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      // allNodes[nodeId].color = "purple";
+      allNodes[nodeId].color = nodeColors[nodeId];
+      // delete allNodes[nodeId].color;
+      if (allNodes[nodeId].hiddenLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+        allNodes[nodeId].hiddenLabel = undefined;
+      }
+    }
+    highlightActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    // console.log("Nothing was selected");
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        // allNodes[nodeId].color = {};
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function filterHighlight(params) {
+  allNodes = nodes.get({ returnType: "Object" });
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    filterActive = true;
+    let selectedNodes = params.nodes;
+
+    // hiding all nodes and saving the label
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = true;
+      if (allNodes[nodeId].savedLabel === undefined) {
+        allNodes[nodeId].savedLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+
+    for (let i=0; i < selectedNodes.length; i++) {
+      allNodes[selectedNodes[i]].hidden = false;
+      if (allNodes[selectedNodes[i]].savedLabel !== undefined) {
+        allNodes[selectedNodes[i]].label = allNodes[selectedNodes[i]].savedLabel;
+        allNodes[selectedNodes[i]].savedLabel = undefined;
+      }
+    }
+
+  } else if (filterActive === true) {
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = false;
+      if (allNodes[nodeId].savedLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].savedLabel;
+        allNodes[nodeId].savedLabel = undefined;
+      }
+    }
+    filterActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function selectNode(nodes) {
+  network.selectNodes(nodes);
+  neighbourhoodHighlight({ nodes: nodes });
+  return nodes;
+}
+
+function selectNodes(nodes) {
+  network.selectNodes(nodes);
+  filterHighlight({nodes: nodes});
+  return nodes;
+}
+
+function highlightFilter(filter) {
+  let selectedNodes = []
+  let selectedProp = filter['property']
+  if (filter['item'] === 'node') {
+    let allNodes = nodes.get({ returnType: "Object" });
+    for (let nodeId in allNodes) {
+      if (allNodes[nodeId][selectedProp] && filter['value'].includes((allNodes[nodeId][selectedProp]).toString())) {
+        selectedNodes.push(nodeId)
+      }
+    }
+  }
+  else if (filter['item'] === 'edge'){
+    let allEdges = edges.get({returnType: 'object'});
+    // check if the selected property exists for selected edge and select the nodes connected to the edge
+    for (let edge in allEdges) {
+      if (allEdges[edge][selectedProp] && filter['value'].includes((allEdges[edge][selectedProp]).toString())) {
+        selectedNodes.push(allEdges[edge]['from'])
+        selectedNodes.push(allEdges[edge]['to'])
+      }
+    }
+  }
+  selectNodes(selectedNodes)
+}</script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+            
+            
+            
+            
+            
+
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 700px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#800000", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7", "label": "Mehmet Gen\u00e7", "shape": "dot", "size": 60}, {"color": "#F1C40F", "font": {"color": "black"}, "id": "Ansiklopedi Maddesi", "label": "Ansiklopedi Maddesi", "shape": "dot", "size": 40, "title": "Ansiklopedi Maddesi: 11 Eser"}, {"color": "#F1C40F", "font": {"color": "black"}, "id": "Kitap", "label": "Kitap", "shape": "dot", "size": 40, "title": "Kitap: 9 Eser"}, {"color": "#F1C40F", "font": {"color": "black"}, "id": "Kitap B\u00f6l\u00fcm\u00fc", "label": "Kitap B\u00f6l\u00fcm\u00fc", "shape": "dot", "size": 40, "title": "Kitap B\u00f6l\u00fcm\u00fc: 18 Eser"}, {"color": "#F1C40F", "font": {"color": "black"}, "id": "Makale", "label": "Makale", "shape": "dot", "size": 40, "title": "Makale: 25 Eser"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "18. Y\u00fczy\u0131l\u0131n \u0130kinci Yar\u0131s\u0131nda Osmanl\u0131 \u0130mparatorlu\u011fu\u0027ndaki Ticari ve S\u0131nai Faaliyetlerin Hacmi ile Malik\u00e2ne Sistemine Ait Verilerin Kar\u015f\u0131la\u015ft\u0131rmal\u0131 Bir \u0130ncelemesi", "label": "18. Y\u00fczy\u0131l\u0131n \u0130kinci Yar\u0131s..", "shape": "dot", "size": 10, "title": "18. Y\u00fczy\u0131l\u0131n \u0130kinci Yar\u0131s\u0131nda Osmanl\u0131 \u0130mparatorlu\u011fu\u0027ndaki Ticari ve S\u0131nai Faaliyetlerin Hacmi ile Malik\u00e2ne Sistemine Ait Verilerin Kar\u015f\u0131la\u015ft\u0131rmal\u0131 Bir \u0130ncelemesi"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Osmanl\u0131 Devletinde \u0130\u00e7 G\u00fcmr\u00fck Rejimi", "label": "Osmanl\u0131 Devletinde \u0130\u00e7 G\u00fcm..", "shape": "dot", "size": 10, "title": "Osmanl\u0131 Devletinde \u0130\u00e7 G\u00fcmr\u00fck Rejimi"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Tarih Ara\u015ft\u0131rmalar\u0131 \u00dczerine Yorum", "label": "Tarih Ara\u015ft\u0131rmalar\u0131 \u00dczeri..", "shape": "dot", "size": 10, "title": "Tarih Ara\u015ft\u0131rmalar\u0131 \u00dczerine Yorum"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "A Study of the Feasibility of Using Eighteenth-century Ottoman Financial Records as an Indicator of Economic Activity", "label": "A Study of the Feasibilit..", "shape": "dot", "size": 10, "title": "A Study of the Feasibility of Using Eighteenth-century Ottoman Financial Records as an Indicator of Economic Activity"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "18. Y\u00fczy\u0131lda T\u00fcrkiye\u2019den Fransa\u2019ya Yap\u0131lan Pamuklu \u0130hracat\u0131 ile \u0130lgili Bir Ara\u015ft\u0131rma Hakk\u0131nda D\u00fc\u015f\u00fcnceler", "label": "18. Y\u00fczy\u0131lda T\u00fcrkiye\u2019den ..", "shape": "dot", "size": 10, "title": "18. Y\u00fczy\u0131lda T\u00fcrkiye\u2019den Fransa\u2019ya Yap\u0131lan Pamuklu \u0130hracat\u0131 ile \u0130lgili Bir Ara\u015ft\u0131rma Hakk\u0131nda D\u00fc\u015f\u00fcnceler"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "17-19. Y\u00fczy\u0131llarda Sanayi ve Ticaret Merkezi Olarak Tokat", "label": "17-19. Y\u00fczy\u0131llarda Sanayi..", "shape": "dot", "size": 10, "title": "17-19. Y\u00fczy\u0131llarda Sanayi ve Ticaret Merkezi Olarak Tokat"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Osmanl\u0131 \u0130ktisad\u00ee D\u00fcnya G\u00f6r\u00fc\u015f\u00fcn\u00fcn \u0130lkeleri", "label": "Osmanl\u0131 \u0130ktisad\u00ee D\u00fcnya G\u00f6..", "shape": "dot", "size": 10, "title": "Osmanl\u0131 \u0130ktisad\u00ee D\u00fcnya G\u00f6r\u00fc\u015f\u00fcn\u00fcn \u0130lkeleri"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "18. Y\u00fczy\u0131lda Osmanl\u0131 Sanayii", "label": "18. Y\u00fczy\u0131lda Osmanl\u0131 Sana..", "shape": "dot", "size": 10, "title": "18. Y\u00fczy\u0131lda Osmanl\u0131 Sanayii"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Ottoman Industry in the Eighteenth Century: General Framework, Characteristics and Main Trends", "label": "Ottoman Industry in the E..", "shape": "dot", "size": 10, "title": "Ottoman Industry in the Eighteenth Century: General Framework, Characteristics and Main Trends"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Esham", "label": "Esham", "shape": "dot", "size": 10, "title": "Esham"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "L\u0027\u00c9conomie Ottomane et la Guerre au XVIII e Si\u00e8cle", "label": "L\u0027\u00c9conomie Ottomane et la..", "shape": "dot", "size": 10, "title": "L\u0027\u00c9conomie Ottomane et la Guerre au XVIII e Si\u00e8cle"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Osmanl\u0131\u2019da Zanaat, Ahl\u00e2k ve \u0130ktisat \u0130li\u015fkisi", "label": "Osmanl\u0131\u2019da Zanaat, Ahl\u00e2k ..", "shape": "dot", "size": 10, "title": "Osmanl\u0131\u2019da Zanaat, Ahl\u00e2k ve \u0130ktisat \u0130li\u015fkisi"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "18. Y\u00fczy\u0131lda Osmanl\u0131 Sanayiinde De\u011fi\u015fmeler ve Devletin Rol\u00fc", "label": "18. Y\u00fczy\u0131lda Osmanl\u0131 Sana..", "shape": "dot", "size": 10, "title": "18. Y\u00fczy\u0131lda Osmanl\u0131 Sanayiinde De\u011fi\u015fmeler ve Devletin Rol\u00fc"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "\u0130ltizam", "label": "\u0130ltizam", "shape": "dot", "size": 10, "title": "\u0130ltizam"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "State and the Economy in the Age of Reforms: Continuity and Change", "label": "State and the Economy in ..", "shape": "dot", "size": 10, "title": "State and the Economy in the Age of Reforms: Continuity and Change"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Osmanl\u0131 \u0130mparatorlu\u011fu\u0027nda Devlet ve Ekonomi", "label": "Osmanl\u0131 \u0130mparatorlu\u011fu\u0027nda..", "shape": "dot", "size": 10, "title": "Osmanl\u0131 \u0130mparatorlu\u011fu\u0027nda Devlet ve Ekonomi"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7: Belgeden Modele Uzanan Bir Portre", "label": "Mehmet Gen\u00e7: Belgeden Mod..", "shape": "dot", "size": 10, "title": "Mehmet Gen\u00e7: Belgeden Modele Uzanan Bir Portre"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Contr\u00f4le et Taxation du Commerce du Caf\u00e9 dans l\u2019Empire Ottoman fin XVIIe\u2014Premi\u00e8re Moiti\u00e9 du XVIIIe Si\u00e8cle", "label": "Contr\u00f4le et Taxation du C..", "shape": "dot", "size": 10, "title": "Contr\u00f4le et Taxation du Commerce du Caf\u00e9 dans l\u2019Empire Ottoman fin XVIIe\u2014Premi\u00e8re Moiti\u00e9 du XVIIIe Si\u00e8cle"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Malikane", "label": "Malikane", "shape": "dot", "size": 10, "title": "Malikane"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Malikane Divani", "label": "Malikane Divani", "shape": "dot", "size": 10, "title": "Malikane Divani"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Osmanl\u0131\u2019da Devlet ve Ekonomi \u00dczerine", "label": "Osmanl\u0131\u2019da Devlet ve Ekon..", "shape": "dot", "size": 10, "title": "Osmanl\u0131\u2019da Devlet ve Ekonomi \u00dczerine"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "\u0130ktisat Tarihi Bak\u0131m\u0131ndan Osmanl\u0131 Ar\u015fivinde K\u0131sa Bir Gezinti", "label": "\u0130ktisat Tarihi Bak\u0131m\u0131ndan..", "shape": "dot", "size": 10, "title": "\u0130ktisat Tarihi Bak\u0131m\u0131ndan Osmanl\u0131 Ar\u015fivinde K\u0131sa Bir Gezinti"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Naz\u0131r", "label": "Naz\u0131r", "shape": "dot", "size": 10, "title": "Naz\u0131r"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mukataa", "label": "Mukataa", "shape": "dot", "size": 10, "title": "Mukataa"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Yapt\u0131klar\u0131m Yapacaklar\u0131m\u0131n Yan \u00dcr\u00fcn\u00fcd\u00fcr", "label": "Yapt\u0131klar\u0131m Yapacaklar\u0131m\u0131..", "shape": "dot", "size": 10, "title": "Yapt\u0131klar\u0131m Yapacaklar\u0131m\u0131n Yan \u00dcr\u00fcn\u00fcd\u00fcr"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Osmanl\u0131 Maliyesinde Mukataa Kavram\u0131", "label": "Osmanl\u0131 Maliyesinde Mukat..", "shape": "dot", "size": 10, "title": "Osmanl\u0131 Maliyesinde Mukataa Kavram\u0131"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Osmanl\u0131 Maliyesi Kurumlar ve B\u00fct\u00e7eler-1 ", "label": "Osmanl\u0131 Maliyesi Kurumlar..", "shape": "dot", "size": 10, "title": "Osmanl\u0131 Maliyesi Kurumlar ve B\u00fct\u00e7eler-1 "}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Osmanl\u0131 Maliyesi Kurumlar ve B\u00fct\u00e7eler-2", "label": "Osmanl\u0131 Maliyesi Kurumlar..", "shape": "dot", "size": 10, "title": "Osmanl\u0131 Maliyesi Kurumlar ve B\u00fct\u00e7eler-2"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Osmanl\u0131lar: \u0130ktisad\u00ee ve Ticar\u00ee Yap\u0131", "label": "Osmanl\u0131lar: \u0130ktisad\u00ee ve T..", "shape": "dot", "size": 10, "title": "Osmanl\u0131lar: \u0130ktisad\u00ee ve Ticar\u00ee Yap\u0131"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Tarihsel Sosyoloji \u00dczerine S\u00f6yle\u015fi", "label": "Tarihsel Sosyoloji \u00dczerin..", "shape": "dot", "size": 10, "title": "Tarihsel Sosyoloji \u00dczerine S\u00f6yle\u015fi"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Economy and Economic Policy", "label": "Economy and Economic Poli..", "shape": "dot", "size": 10, "title": "Economy and Economic Policy"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Klasik Osmanl\u0131 \u0130ktisad\u00ee Sisteminde \u0130stanbul\u2019un Yeri", "label": "Klasik Osmanl\u0131 \u0130ktisad\u00ee S..", "shape": "dot", "size": 10, "title": "Klasik Osmanl\u0131 \u0130ktisad\u00ee Sisteminde \u0130stanbul\u2019un Yeri"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Tarihimize Giydirilen Deli G\u00f6mle\u011fi: Osmanl\u0131 Tarihinde D\u00f6nemlendirme Meselesi", "label": "Tarihimize Giydirilen Del..", "shape": "dot", "size": 10, "title": "Tarihimize Giydirilen Deli G\u00f6mle\u011fi: Osmanl\u0131 Tarihinde D\u00f6nemlendirme Meselesi"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "19. Y\u00fczy\u0131l\u0131n Ortalar\u0131nda Osmanl\u0131 Ekonomisi", "label": "19. Y\u00fczy\u0131l\u0131n Ortalar\u0131nda ..", "shape": "dot", "size": 10, "title": "19. Y\u00fczy\u0131l\u0131n Ortalar\u0131nda Osmanl\u0131 Ekonomisi"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Yed-i Vahid", "label": "Yed-i Vahid", "shape": "dot", "size": 10, "title": "Yed-i Vahid"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7\u0027in Osmanl\u0131 Klasik Sistemini Alg\u0131lay\u0131\u015f\u0131", "label": "Mehmet Gen\u00e7\u0027in Osmanl\u0131 Kl..", "shape": "dot", "size": 10, "title": "Mehmet Gen\u00e7\u0027in Osmanl\u0131 Klasik Sistemini Alg\u0131lay\u0131\u015f\u0131"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7, \u0130ktisat Tarih\u00e7isi", "label": "Mehmet Gen\u00e7, \u0130ktisat Tari..", "shape": "dot", "size": 10, "title": "Mehmet Gen\u00e7, \u0130ktisat Tarih\u00e7isi"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Bir Entelekt\u00fcel Olarak Mehmet Gen\u00e7: Milli Tarih \u015euuru Olu\u015fturmak ya da T\u00fcrk-\u0130slam Ahl\u00e2k\u0131 ve Osmanl\u0131\u0027n\u0131n Ruhu", "label": "Bir Entelekt\u00fcel Olarak Me..", "shape": "dot", "size": 10, "title": "Bir Entelekt\u00fcel Olarak Mehmet Gen\u00e7: Milli Tarih \u015euuru Olu\u015fturmak ya da T\u00fcrk-\u0130slam Ahl\u00e2k\u0131 ve Osmanl\u0131\u0027n\u0131n Ruhu"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Modern \u0130ktisadi B\u00fcy\u00fcme Kar\u015f\u0131s\u0131nda Osmanl\u0131 Sistemi ve Ekonomisi", "label": "Modern \u0130ktisadi B\u00fcy\u00fcme Ka..", "shape": "dot", "size": 10, "title": "Modern \u0130ktisadi B\u00fcy\u00fcme Kar\u015f\u0131s\u0131nda Osmanl\u0131 Sistemi ve Ekonomisi"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Klasik Osmanl\u0131 Sosyal-\u0130ktisad\u00ee Sistemi ve Vak\u0131flar", "label": "Klasik Osmanl\u0131 Sosyal-\u0130kt..", "shape": "dot", "size": 10, "title": "Klasik Osmanl\u0131 Sosyal-\u0130ktisad\u00ee Sistemi ve Vak\u0131flar"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Osmanl\u0131 Ekonomisine Dair Konu\u015fmalar I", "label": "Osmanl\u0131 Ekonomisine Dair ..", "shape": "dot", "size": 10, "title": "Osmanl\u0131 Ekonomisine Dair Konu\u015fmalar I"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "\u201cHac Yolunda Bir Kar\u0131nca\u201d Mehmet Gen\u00e7 \u0130\u00e7in Bir Biyografi Denemesi", "label": "\u201cHac Yolunda Bir Kar\u0131nca\u201d..", "shape": "dot", "size": 10, "title": "\u201cHac Yolunda Bir Kar\u0131nca\u201d Mehmet Gen\u00e7 \u0130\u00e7in Bir Biyografi Denemesi"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7\u0027in Metodolojik Yakla\u015f\u0131m\u0131 ve \u00c7a\u011fda\u015f Bilim Felsefesindeki Konumuna Dair Baz\u0131 D\u00fc\u015f\u00fcnceler", "label": "Mehmet Gen\u00e7\u0027in Metodoloji..", "shape": "dot", "size": 10, "title": "Mehmet Gen\u00e7\u0027in Metodolojik Yakla\u015f\u0131m\u0131 ve \u00c7a\u011fda\u015f Bilim Felsefesindeki Konumuna Dair Baz\u0131 D\u00fc\u015f\u00fcnceler"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Hac yolunda bir kar\u0131nca: Mehmet Gen\u00e7", "label": "Hac yolunda bir kar\u0131nca: ..", "shape": "dot", "size": 10, "title": "Hac yolunda bir kar\u0131nca: Mehmet Gen\u00e7"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7 An\u0131s\u0131na Osmanl\u0131 \u0130ktisat Tarihi \u00c7al\u0131\u015fmalar\u0131 I", "label": "Mehmet Gen\u00e7 An\u0131s\u0131na Osman..", "shape": "dot", "size": 10, "title": "Mehmet Gen\u00e7 An\u0131s\u0131na Osmanl\u0131 \u0130ktisat Tarihi \u00c7al\u0131\u015fmalar\u0131 I"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Katk\u0131 ve Teklifleriyle Osmanl\u0131 Tarih\u00e7ili\u011finde Mehmet Gen\u00e7", "label": "Katk\u0131 ve Teklifleriyle Os..", "shape": "dot", "size": 10, "title": "Katk\u0131 ve Teklifleriyle Osmanl\u0131 Tarih\u00e7ili\u011finde Mehmet Gen\u00e7"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7 ve Osmanl\u0131 Sosyo Ekonomi Tarihi \u0130le Alakal\u0131 \u00c7al\u0131\u015fmalar\u0131", "label": "Mehmet Gen\u00e7 ve Osmanl\u0131 So..", "shape": "dot", "size": 10, "title": "Mehmet Gen\u00e7 ve Osmanl\u0131 Sosyo Ekonomi Tarihi \u0130le Alakal\u0131 \u00c7al\u0131\u015fmalar\u0131"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Genc\u0327\u0027in izindeki yolcu: Ahmet Cihan", "label": "Mehmet Genc\u0327\u0027in izindeki ..", "shape": "dot", "size": 10, "title": "Mehmet Genc\u0327\u0027in izindeki yolcu: Ahmet Cihan"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "18. Y\u00fczy\u0131la Ait Osmanl\u0131 Mali Verilerinin \u0130ktisadi Faaliyetin G\u00f6stergesi Olarak Kullan\u0131labilirli\u011fi \u00dczerinde Bir \u00c7al\u0131\u015fma", "label": "18. Y\u00fczy\u0131la Ait Osmanl\u0131 M..", "shape": "dot", "size": 10, "title": "18. Y\u00fczy\u0131la Ait Osmanl\u0131 Mali Verilerinin \u0130ktisadi Faaliyetin G\u00f6stergesi Olarak Kullan\u0131labilirli\u011fi \u00dczerinde Bir \u00c7al\u0131\u015fma"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "18. Y\u00fczy\u0131lda Osmanl\u0131 Ekonomisi ve Sava\u015f", "label": "18. Y\u00fczy\u0131lda Osmanl\u0131 Ekon..", "shape": "dot", "size": 10, "title": "18. Y\u00fczy\u0131lda Osmanl\u0131 Ekonomisi ve Sava\u015f"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "\u0130ki \u0130mparatorlu\u011fun Ba\u015fkenti", "label": "\u0130ki \u0130mparatorlu\u011fun Ba\u015fken..", "shape": "dot", "size": 10, "title": "\u0130ki \u0130mparatorlu\u011fun Ba\u015fkenti"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "19. Y\u00fczy\u0131lda Osmanl\u0131 \u0130ktisad\u00ee D\u00fcnya G\u00f6r\u00fc\u015f\u00fcn\u00fcn Klasik Prensiplerindeki De\u011fi\u015fmeler", "label": "19. Y\u00fczy\u0131lda Osmanl\u0131 \u0130kti..", "shape": "dot", "size": 10, "title": "19. Y\u00fczy\u0131lda Osmanl\u0131 \u0130ktisad\u00ee D\u00fcnya G\u00f6r\u00fc\u015f\u00fcn\u00fcn Klasik Prensiplerindeki De\u011fi\u015fmeler"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Abdullah Mesud K\u00fc\u00e7\u00fckkalay, Hikmetin Pe\u015finde \u00dc\u00c7 PORTRE: Mehmet Gen\u00e7-H\u00fcseyin K\u00fc\u00e7\u00fckkalay-Ahmet Tabako\u011flu, \u0130stanbul: \u00c7izgi Kitabevi, 2018, 349 s.", "label": "Abdullah Mesud K\u00fc\u00e7\u00fckkalay..", "shape": "dot", "size": 10, "title": "Abdullah Mesud K\u00fc\u00e7\u00fckkalay, Hikmetin Pe\u015finde \u00dc\u00c7 PORTRE: Mehmet Gen\u00e7-H\u00fcseyin K\u00fc\u00e7\u00fckkalay-Ahmet Tabako\u011flu, \u0130stanbul: \u00c7izgi Kitabevi, 2018, 349 s."}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7 Bir \u00c2limin Hayat ve \u0130lim Serencam\u0131", "label": "Mehmet Gen\u00e7 Bir \u00c2limin Ha..", "shape": "dot", "size": 10, "title": "Mehmet Gen\u00e7 Bir \u00c2limin Hayat ve \u0130lim Serencam\u0131"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7 ve Erol \u00d6zvar, Osmanl\u0131 Ekonomisine Dair Konu\u015fmalar I, \u00d6t\u00fcken Ne\u015friyat, 2021, 227 s.", "label": "Mehmet Gen\u00e7 ve Erol \u00d6zvar..", "shape": "dot", "size": 10, "title": "Mehmet Gen\u00e7 ve Erol \u00d6zvar, Osmanl\u0131 Ekonomisine Dair Konu\u015fmalar I, \u00d6t\u00fcken Ne\u015friyat, 2021, 227 s."}, {"color": "#C0392B", "font": {"color": "black"}, "id": "OSAMER Konu\u015fmalar\u0131 Serisinin \u0130lk Halkas\u0131: \u201cM\u00fctevaz\u0131 Bir \u0130nsan, M\u00fctebahhir Bir Alim: Mehmet Gen\u00e7\u201d Faaliyet Raporu", "label": "OSAMER Konu\u015fmalar\u0131 Serisi..", "shape": "dot", "size": 10, "title": "OSAMER Konu\u015fmalar\u0131 Serisinin \u0130lk Halkas\u0131: \u201cM\u00fctevaz\u0131 Bir \u0130nsan, M\u00fctebahhir Bir Alim: Mehmet Gen\u00e7\u201d Faaliyet Raporu"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7: Bir \u00c2limin Hayat ve \u0130lim Serencam\u0131", "label": "Mehmet Gen\u00e7: Bir \u00c2limin H..", "shape": "dot", "size": 10, "title": "Mehmet Gen\u00e7: Bir \u00c2limin Hayat ve \u0130lim Serencam\u0131"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Cumhuriyet Nesli Bir Bilge Mehmet Gen\u00e7", "label": "Cumhuriyet Nesli Bir Bilg..", "shape": "dot", "size": 10, "title": "Cumhuriyet Nesli Bir Bilge Mehmet Gen\u00e7"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Historicizing National Socialism and Mehmet Gen\u00e7", "label": "Historicizing National So..", "shape": "dot", "size": 10, "title": "Historicizing National Socialism and Mehmet Gen\u00e7"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7 \u00dczerine Biyografik Bir Ara\u015ft\u0131rma", "label": "Mehmet Gen\u00e7 \u00dczerine Biyog..", "shape": "dot", "size": 10, "title": "Mehmet Gen\u00e7 \u00dczerine Biyografik Bir Ara\u015ft\u0131rma"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Wagner Gibi Yazmak: Mehmet Gen\u00e7", "label": "Wagner Gibi Yazmak: Mehme..", "shape": "dot", "size": 10, "title": "Wagner Gibi Yazmak: Mehmet Gen\u00e7"}, {"color": "#C0392B", "font": {"color": "black"}, "id": "Mehmet Gen\u00e7\u2019in Osmanl\u0131 \u0130ktisadi D\u00fcnya G\u00f6r\u00fc\u015f\u00fc \u0130lkelerinin Analitik Kriti\u011fi ve \u0130ktidar Birikimi", "label": "Mehmet Gen\u00e7\u2019in Osmanl\u0131 \u0130k..", "shape": "dot", "size": 10, "title": "Mehmet Gen\u00e7\u2019in Osmanl\u0131 \u0130ktisadi D\u00fcnya G\u00f6r\u00fc\u015f\u00fc \u0130lkelerinin Analitik Kriti\u011fi ve \u0130ktidar Birikimi"}]);
+                  edges = new vis.DataSet([{"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Ansiklopedi Maddesi", "width": 3}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Kitap", "width": 3}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Kitap B\u00f6l\u00fcm\u00fc", "width": 3}, {"color": "#ddd", "from": "Mehmet Gen\u00e7", "to": "Makale", "width": 3}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "18. Y\u00fczy\u0131l\u0131n \u0130kinci Yar\u0131s\u0131nda Osmanl\u0131 \u0130mparatorlu\u011fu\u0027ndaki Ticari ve S\u0131nai Faaliyetlerin Hacmi ile Malik\u00e2ne Sistemine Ait Verilerin Kar\u015f\u0131la\u015ft\u0131rmal\u0131 Bir \u0130ncelemesi", "width": 1}, {"color": "#eee", "from": "Ansiklopedi Maddesi", "to": "Osmanl\u0131 Devletinde \u0130\u00e7 G\u00fcmr\u00fck Rejimi", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Tarih Ara\u015ft\u0131rmalar\u0131 \u00dczerine Yorum", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "A Study of the Feasibility of Using Eighteenth-century Ottoman Financial Records as an Indicator of Economic Activity", "width": 1}, {"color": "#eee", "from": "Makale", "to": "18. Y\u00fczy\u0131lda T\u00fcrkiye\u2019den Fransa\u2019ya Yap\u0131lan Pamuklu \u0130hracat\u0131 ile \u0130lgili Bir Ara\u015ft\u0131rma Hakk\u0131nda D\u00fc\u015f\u00fcnceler", "width": 1}, {"color": "#eee", "from": "Makale", "to": "17-19. Y\u00fczy\u0131llarda Sanayi ve Ticaret Merkezi Olarak Tokat", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Osmanl\u0131 \u0130ktisad\u00ee D\u00fcnya G\u00f6r\u00fc\u015f\u00fcn\u00fcn \u0130lkeleri", "width": 1}, {"color": "#eee", "from": "Makale", "to": "18. Y\u00fczy\u0131lda Osmanl\u0131 Sanayii", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Ottoman Industry in the Eighteenth Century: General Framework, Characteristics and Main Trends", "width": 1}, {"color": "#eee", "from": "Ansiklopedi Maddesi", "to": "Esham", "width": 1}, {"color": "#eee", "from": "Makale", "to": "L\u0027\u00c9conomie Ottomane et la Guerre au XVIII e Si\u00e8cle", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Osmanl\u0131\u2019da Zanaat, Ahl\u00e2k ve \u0130ktisat \u0130li\u015fkisi", "width": 1}, {"color": "#eee", "from": "Ansiklopedi Maddesi", "to": "18. Y\u00fczy\u0131lda Osmanl\u0131 Sanayiinde De\u011fi\u015fmeler ve Devletin Rol\u00fc", "width": 1}, {"color": "#eee", "from": "Ansiklopedi Maddesi", "to": "\u0130ltizam", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "State and the Economy in the Age of Reforms: Continuity and Change", "width": 1}, {"color": "#eee", "from": "Kitap", "to": "Osmanl\u0131 \u0130mparatorlu\u011fu\u0027nda Devlet ve Ekonomi", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Mehmet Gen\u00e7: Belgeden Modele Uzanan Bir Portre", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Contr\u00f4le et Taxation du Commerce du Caf\u00e9 dans l\u2019Empire Ottoman fin XVIIe\u2014Premi\u00e8re Moiti\u00e9 du XVIIIe Si\u00e8cle", "width": 1}, {"color": "#eee", "from": "Ansiklopedi Maddesi", "to": "Malikane", "width": 1}, {"color": "#eee", "from": "Ansiklopedi Maddesi", "to": "Malikane Divani", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Osmanl\u0131\u2019da Devlet ve Ekonomi \u00dczerine", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "\u0130ktisat Tarihi Bak\u0131m\u0131ndan Osmanl\u0131 Ar\u015fivinde K\u0131sa Bir Gezinti", "width": 1}, {"color": "#eee", "from": "Ansiklopedi Maddesi", "to": "Naz\u0131r", "width": 1}, {"color": "#eee", "from": "Ansiklopedi Maddesi", "to": "Mukataa", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Yapt\u0131klar\u0131m Yapacaklar\u0131m\u0131n Yan \u00dcr\u00fcn\u00fcd\u00fcr", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Osmanl\u0131 Maliyesinde Mukataa Kavram\u0131", "width": 1}, {"color": "#eee", "from": "Kitap", "to": "Osmanl\u0131 Maliyesi Kurumlar ve B\u00fct\u00e7eler-1 ", "width": 1}, {"color": "#eee", "from": "Kitap", "to": "Osmanl\u0131 Maliyesi Kurumlar ve B\u00fct\u00e7eler-2", "width": 1}, {"color": "#eee", "from": "Ansiklopedi Maddesi", "to": "Osmanl\u0131lar: \u0130ktisad\u00ee ve Ticar\u00ee Yap\u0131", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Tarihsel Sosyoloji \u00dczerine S\u00f6yle\u015fi", "width": 1}, {"color": "#eee", "from": "Ansiklopedi Maddesi", "to": "Economy and Economic Policy", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Klasik Osmanl\u0131 \u0130ktisad\u00ee Sisteminde \u0130stanbul\u2019un Yeri", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Tarihimize Giydirilen Deli G\u00f6mle\u011fi: Osmanl\u0131 Tarihinde D\u00f6nemlendirme Meselesi", "width": 1}, {"color": "#eee", "from": "Makale", "to": "19. Y\u00fczy\u0131l\u0131n Ortalar\u0131nda Osmanl\u0131 Ekonomisi", "width": 1}, {"color": "#eee", "from": "Ansiklopedi Maddesi", "to": "Yed-i Vahid", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Mehmet Gen\u00e7\u0027in Osmanl\u0131 Klasik Sistemini Alg\u0131lay\u0131\u015f\u0131", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Mehmet Gen\u00e7: Belgeden Modele Uzanan Bir Portre", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Mehmet Gen\u00e7, \u0130ktisat Tarih\u00e7isi", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Bir Entelekt\u00fcel Olarak Mehmet Gen\u00e7: Milli Tarih \u015euuru Olu\u015fturmak ya da T\u00fcrk-\u0130slam Ahl\u00e2k\u0131 ve Osmanl\u0131\u0027n\u0131n Ruhu", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Modern \u0130ktisadi B\u00fcy\u00fcme Kar\u015f\u0131s\u0131nda Osmanl\u0131 Sistemi ve Ekonomisi", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Klasik Osmanl\u0131 Sosyal-\u0130ktisad\u00ee Sistemi ve Vak\u0131flar", "width": 1}, {"color": "#eee", "from": "Kitap", "to": "Osmanl\u0131 Ekonomisine Dair Konu\u015fmalar I", "width": 1}, {"color": "#eee", "from": "Makale", "to": "\u201cHac Yolunda Bir Kar\u0131nca\u201d Mehmet Gen\u00e7 \u0130\u00e7in Bir Biyografi Denemesi", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Mehmet Gen\u00e7\u0027in Metodolojik Yakla\u015f\u0131m\u0131 ve \u00c7a\u011fda\u015f Bilim Felsefesindeki Konumuna Dair Baz\u0131 D\u00fc\u015f\u00fcnceler", "width": 1}, {"color": "#eee", "from": "Kitap", "to": "Hac yolunda bir kar\u0131nca: Mehmet Gen\u00e7", "width": 1}, {"color": "#eee", "from": "Kitap", "to": "Mehmet Gen\u00e7 An\u0131s\u0131na Osmanl\u0131 \u0130ktisat Tarihi \u00c7al\u0131\u015fmalar\u0131 I", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Katk\u0131 ve Teklifleriyle Osmanl\u0131 Tarih\u00e7ili\u011finde Mehmet Gen\u00e7", "width": 1}, {"color": "#eee", "from": "Kitap B\u00f6l\u00fcm\u00fc", "to": "Mehmet Gen\u00e7 ve Osmanl\u0131 Sosyo Ekonomi Tarihi \u0130le Alakal\u0131 \u00c7al\u0131\u015fmalar\u0131", "width": 1}, {"color": "#eee", "from": "Kitap", "to": "Mehmet Genc\u0327\u0027in izindeki yolcu: Ahmet Cihan", "width": 1}, {"color": "#eee", "from": "Makale", "to": "18. Y\u00fczy\u0131la Ait Osmanl\u0131 Mali Verilerinin \u0130ktisadi Faaliyetin G\u00f6stergesi Olarak Kullan\u0131labilirli\u011fi \u00dczerinde Bir \u00c7al\u0131\u015fma", "width": 1}, {"color": "#eee", "from": "Makale", "to": "18. Y\u00fczy\u0131lda Osmanl\u0131 Ekonomisi ve Sava\u015f", "width": 1}, {"color": "#eee", "from": "Makale", "to": "\u0130ki \u0130mparatorlu\u011fun Ba\u015fkenti", "width": 1}, {"color": "#eee", "from": "Makale", "to": "19. Y\u00fczy\u0131lda Osmanl\u0131 \u0130ktisad\u00ee D\u00fcnya G\u00f6r\u00fc\u015f\u00fcn\u00fcn Klasik Prensiplerindeki De\u011fi\u015fmeler", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Abdullah Mesud K\u00fc\u00e7\u00fckkalay, Hikmetin Pe\u015finde \u00dc\u00c7 PORTRE: Mehmet Gen\u00e7-H\u00fcseyin K\u00fc\u00e7\u00fckkalay-Ahmet Tabako\u011flu, \u0130stanbul: \u00c7izgi Kitabevi, 2018, 349 s.", "width": 1}, {"color": "#eee", "from": "Kitap", "to": "Mehmet Gen\u00e7 Bir \u00c2limin Hayat ve \u0130lim Serencam\u0131", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Mehmet Gen\u00e7 ve Erol \u00d6zvar, Osmanl\u0131 Ekonomisine Dair Konu\u015fmalar I, \u00d6t\u00fcken Ne\u015friyat, 2021, 227 s.", "width": 1}, {"color": "#eee", "from": "Makale", "to": "OSAMER Konu\u015fmalar\u0131 Serisinin \u0130lk Halkas\u0131: \u201cM\u00fctevaz\u0131 Bir \u0130nsan, M\u00fctebahhir Bir Alim: Mehmet Gen\u00e7\u201d Faaliyet Raporu", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Mehmet Gen\u00e7: Bir \u00c2limin Hayat ve \u0130lim Serencam\u0131", "width": 1}, {"color": "#eee", "from": "Kitap", "to": "Cumhuriyet Nesli Bir Bilge Mehmet Gen\u00e7", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Historicizing National Socialism and Mehmet Gen\u00e7", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Mehmet Gen\u00e7 \u00dczerine Biyografik Bir Ara\u015ft\u0131rma", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Wagner Gibi Yazmak: Mehmet Gen\u00e7", "width": 1}, {"color": "#eee", "from": "Makale", "to": "Mehmet Gen\u00e7\u2019in Osmanl\u0131 \u0130ktisadi D\u00fcnya G\u00f6r\u00fc\u015f\u00fc \u0130lkelerinin Analitik Kriti\u011fi ve \u0130ktidar Birikimi", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.01,
+            "damping": 0.4,
+            "gravitationalConstant": -80,
+            "springConstant": 0.08,
+            "springLength": 150
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

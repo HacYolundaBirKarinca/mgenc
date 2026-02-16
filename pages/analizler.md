@@ -69,7 +69,7 @@ Mehmet Genç ile adı geçen üniversiteler, vakıflar, dernekler ve araştırma
 
 ---
 ## 3. Yazılı Eserler Ağı
-Koleksiyonda yer alan ve **"Eserleri"** başlığı altında toplanan çalışmaların türlerine (Kitap, Makale, Ansiklopedi Maddesi vb.) göre dağılımı.
+Koleksiyonda yer alan ve **"Eserleri"** başlığı altında toplanan Mehmet Genç çalışmalarının türlerine (Kitap, Makale, Ansiklopedi Maddesi vb.) göre dağılımı.
 
 <div style="width: 100%; height: 800px; border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
     <iframe src="/koleksiyonum/assets/vis/network_eser_detay.html" 

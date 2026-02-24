@@ -11,9 +11,9 @@ credits: false
 
 Bu çalışma, hocamız Mehmet Genç'in çalışmalarını, faaliyetlerini ve hatırasını, zaman ve mekân unsurlarını dikkate alarak ve telif haklarına riayet ederek 'dijital biyografi' formatında bir araya getirmeyi amaçlamaktadır.
 
-Kitle kaynak usulüyle (crowdsourcing) yani herkesin katkısı ile zenginleşecek olan bu portal yaşayan bir proje olarak tasarlanmıştır. Çalışmalarımız devam etmekte olup, mevcut eksiklikler sizlerin değerli katkılarıyla tamamlanacaktır.
+Kitle kaynak usulüyle (crowdsourcing) yani herkesin katkısı ile zenginleşecek olan bu portal yaşayan bir çalışma olarak tasarlanmıştır. Güncellemelerimiz devam etmekte olup, mevcut eksiklikler sizlerin değerli katkılarıyla tamamlanacaktır.
 
-Projenin ilk aşaması, hocamızın vefatının hemen akabinde, 2021 yılına kadar olan verileri kapsayacak şekilde Digital Ottoman Studies ekibi (Yunus Uğur, Fatma Aladağ, Büşranur Bekman, Beyza Topuz Demir, Serpil Özcan, Emine Öztaner, Özge Eda Kaya) tarafından hazırlanmıştır. Bu süreç, Fehmi Yılmaz, Kahraman Şakul, Abdulhamit Kırmızı, Serhat Aslaner, Kenan Yıldız ve İsmail Hakkı Kadı gibi kıymetli isimlerin katkılarıyla ikmal edilmiştir.
+Çalışmanın ilk aşaması, hocamızın vefatının hemen akabinde, 2021 yılına kadar olan verileri kapsayacak şekilde Digital Ottoman Studies çatısı altında (Yunus Uğur, Fatma Aladağ, Büşranur Bekman, Beyza Topuz Demir, Serpil Özcan, Emine Öztaner, Özge Eda Kaya, Mahmut Ertürk) tarafından hazırlanmıştır. Bu süreç, Fehmi Yılmaz, Kahraman Şakul, Abdulhamit Kırmızı, Serhat Aslaner, Kenan Yıldız ve İsmail Hakkı Kadı gibi kıymetli isimlerin katkılarıyla ikmal edilmiştir.
 
 2021 sonrası veriler ile eksik kalan kısımların derlenmesi ve mevcut web portalına aktarılması süreci ise Marmara Üniversitesi Mehmet Genç İktisat Tarihi Çalışmaları Araştırma ve Uygulama Merkezi ile Dijital Beşeri Bilimler Uygulama ve Araştırma Merkezi ekiplerince (Fehmi Yılmaz, Yunus Uğur, Berk Özkaya, Necmettin Semiz, Eren Ergüven, Sabri Garip,  Mehmet Ali Çiftçi, İbrahim Kaplan, Selin Hatoğlu, Hamdi Sefa Keskin, Enes Hasmesçi, Hasan Ben) yürütülmektedir. 
 

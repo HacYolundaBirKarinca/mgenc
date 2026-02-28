@@ -26,3 +26,7 @@ sass:
 
 # Konu bulutunda görünmesi istenmeyen kelimeler
 subject_stopwords: "Mehmet Genç Gönüllüsü"
+
+# Arama motoru ayarları
+# Buraya eklediğiniz her sütun arama kutusunda sorgulanabilir hale gelir.
+lunr-index-fields: [title, subject, description, creator, location, date, rights, source]

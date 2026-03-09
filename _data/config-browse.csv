@@ -1,6 +1,7 @@
 field,display_name,btn,hidden,sort_name
-date,Tarih,,,Date
+date,Tarih,,,Tarih
 subject,Konu,true
 location,Yer,true
+
 
 

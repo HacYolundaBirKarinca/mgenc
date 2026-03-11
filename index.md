@@ -53,10 +53,13 @@ permalink: /
 /* ── HERO ── */
 .mghero {
   background: var(--ink);
-  padding: 5rem 4rem 4rem;
+  padding: 2.5rem 2rem 3rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+@media (min-width: 768px) {
+  .mghero { padding: 3rem 4rem 4rem; }
 }
 .mghero-left {
   max-width: 800px;
@@ -402,7 +405,7 @@ permalink: /
           <img src="https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/solak_sm.jpg"
                onerror="this.style.display='none'" alt="Mehmet Genç">
         </div>
-        <p class="mg-bio-caption" style="font-size:1rem;font-family:'Cormorant Garamond',serif;color:var(--rust);margin-top:0.8rem;">Mehmet Genç (1934–2021)</p>
+        <p class="mg-bio-caption" style="font-size:1.4rem;font-family:'Cormorant Garamond',serif;font-weight:400;color:var(--rust);margin-top:1rem;letter-spacing:0.02em;">Mehmet Genç (1934–2021)</p>
       </div>
       <div>
         <div class="mg-section-label">Hayatı</div>

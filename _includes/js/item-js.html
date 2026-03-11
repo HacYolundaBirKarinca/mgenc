@@ -94,8 +94,16 @@ function displayItem(record, prev_id, next_id, compound_object) {
             fields += '<dt class="field">{{ f.display_name }}:</dt> <dd class="field-value">' + browseLinks + '</dd>';
         }
         {%- else -%}
-        if (item[{{ f.field | jsonify }}]) { fields += '<dt class="field">{{ f.display_name }}:</dt> <dd class="field-value">{% if f.external_link == "true" %}<a href="' + item[{{ f.field | jsonify }}] + '" target="_blank" rel="noopener">' + item[{{ f.field | jsonify }}] + '</a>{% else %}' + item[{{ f.field | jsonify }}] + '{% endif %}</dd>'; }
-        {% endif %}{% endfor %}
+        if (item[{{ f.field | jsonify }}]) { var fieldVal = item[{{ f.field | jsonify }}];
+  var fieldHtml;
+  if ({% if f.external_link == "true" %}true{% else %}false{% endif %}) {
+      fieldHtml = '<a href="' + fieldVal + '" target="_blank" rel="noopener">' + fieldVal + '</a>';
+  } else if (/^https?:\/\//.test(fieldVal.trim())) {
+      fieldHtml = '<a href="' + fieldVal.trim() + '" target="_blank" rel="noopener" style="word-break:break-all">' + fieldVal.trim() + '</a>';
+  } else {
+      fieldHtml = fieldVal;
+  }
+  fields += '<dt class="field">{{ f.display_name }}:</dt> <dd class="field-value">' + fieldHtml + '</dd>'; }        {% endif %}{% endfor %}
         fields += '</dl>';
         return fields;
     };

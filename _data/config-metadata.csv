@@ -5,12 +5,13 @@ date,Tarih,
 location,Yer
 subject,Konular,true
 source,Kaynak
-identifier,Kaynak İsmi,,
+rights,Telif Hakkı/Linki,
 type,Türü,
 format,Format,
-rights,Telif Hakkı/Linki,
 rightsstatement,Telif Link,,true
+identifier,Veri Kimliği,,
 creator,Oluşturan
+
 
 
 

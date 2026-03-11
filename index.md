@@ -4,72 +4,18 @@ layout: page
 permalink: /
 ---
 
-
-<script>
-// CB carousel ve video yüklemesini durdur - sayfa başında çalışır
-(function(){
-  // Video elementlerinin autoplay/preload'ını engelle
-  document.addEventListener('DOMContentLoaded', function(){
-    // Tüm video ve source elementlerini bul ve durdur
-    document.querySelectorAll('video, video source').forEach(function(el){
-      el.src = ''; el.srcObject = null;
-      if(el.tagName === 'VIDEO'){ el.pause(); el.load(); }
-    });
-    // CB carousel'ı bul ve durdur
-    if(window.jQuery){
-      try { jQuery('#carousel').carousel('pause').carousel('dispose'); } catch(e){}
-      try { jQuery('.carousel').carousel('pause'); } catch(e){}
-    }
-    // CB'nin kendi home bileşenlerini gizle
-    var selectors = [
-      '#cb-home-featured', '.home-hero', '.home-about',
-      '.home-browse', '.home-timeline', '.home-subjects',
-      '.home-map', '.home-data', '#jumbotron', '.jumbotron',
-      '#carousel', '.carousel-item video'
-    ];
-    selectors.forEach(function(sel){
-      document.querySelectorAll(sel).forEach(function(el){
-        el.style.display = 'none';
-        // Video src'yi temizle
-        el.querySelectorAll('video').forEach(function(v){
-          v.pause(); v.src=''; v.load();
-        });
-      });
-    });
-  });
-  // Window load'dan önce de dene
-  window.addEventListener('load', function(){
-    document.querySelectorAll('video').forEach(function(v){
-      v.pause(); v.src = ''; v.load();
-    });
-  });
-})();
-</script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-/* ── CB home-infographic override ── */
-/* CB'nin tüm home widget'larını gizle */
-#cb-home-featured,
-.home-hero, .home-about, .home-browse, .home-timeline,
-.home-subjects, .home-map, .home-data, .home-locations,
-#jumbotron, .jumbotron, .cb-featured-image,
-#homeHero, .hero-image-block,
-/* CB iki kolonlu grid layout */
-#maincontent .row:first-child,
-#maincontent .container > h1,
-#maincontent .container > .pb-3,
-/* Carousel */
-#carousel, .carousel { display: none !important; }
+/* ── CB page layout override ── */
+/* CB page layout'ta sadece h1 title ve container var, carousel yok */
+#maincontent > .container > h1,
+#maincontent > .container > h2:first-child { display: none !important; }
 
-/* Container'ı aç */
-#maincontent > .container,
-#maincontent > .container-fluid {
+#maincontent > .container {
   max-width: 100% !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  padding-top: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 /* ═══════════════════════════════════════════
@@ -403,9 +349,7 @@ permalink: /
 }
 .mg-data-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.08em; }
 
-/* ── REVEAL ── */
-.mg-reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
-.mg-reveal.visible { opacity: 1; transform: none; }
+/* reveal devre dışı */
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
@@ -450,7 +394,7 @@ permalink: /
 </section>
 
 <!-- ════════ BİYOGRAFİ ════════ -->
-<section class="mg-section mg-bio mg-reveal">
+<section class="mg-section mg-bio">
   <div class="mg-section-inner">
     <div class="mg-bio-grid">
       <div>
@@ -483,7 +427,7 @@ permalink: /
 </section>
 
 <!-- ════════ ZAMANÇİZGİSİ ════════ -->
-<section class="mg-section mg-timeline mg-reveal">
+<section class="mg-section mg-timeline">
   <div class="mg-section-inner">
     <div class="mg-section-label">Kronoloji</div>
     <h2 class="mg-section-title">Kronolojiden Notlar</h2>
@@ -540,7 +484,7 @@ permalink: /
 </section>
 
 <!-- ════════ PORTAL KAPILAR ════════ -->
-<section class="mg-section mg-portals mg-reveal">
+<section class="mg-section mg-portals">
   <div class="mg-section-inner">
     <div class="mg-section-label">Koleksiyon</div>
     <h2 class="mg-section-title">Nereden Başlamak İstersiniz?</h2>
@@ -612,7 +556,7 @@ permalink: /
     </div>
   </div>
 </section><!-- ════════ KONULAR ════════ -->
-<section class="mg-section mg-topics mg-reveal">
+<section class="mg-section mg-topics">
   <div class="mg-section-inner">
     <div class="mg-section-label">Konular</div>
     <h2 class="mg-section-title">Öne Çıkan Temalar</h2>
@@ -639,3 +583,16 @@ permalink: /
 
 
 </div><!-- #mg-home -->
+<script>
+(function(){
+  var tl = document.getElementById('mgTimeline');
+  if(tl){
+    tl.addEventListener('wheel', function(e){
+      if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
+        e.preventDefault();
+        tl.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+  }
+})();
+</script>

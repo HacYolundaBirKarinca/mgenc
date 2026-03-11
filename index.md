@@ -106,26 +106,14 @@ permalink: /
 
 /* ── HERO ── */
 .mghero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 85vh;
-  position: relative;
-  overflow: hidden;
-}
-.mghero::after {
-  content: '';
-  position: absolute;
-  top: 10%; bottom: 10%;
-  left: 50%;
-  width: 1px;
-  background: linear-gradient(to bottom, transparent, var(--gold-lt), transparent);
-}
-.mghero-left {
   background: var(--ink);
   padding: 5rem 4rem 4rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.mghero-left {
+  max-width: 800px;
 }
 
 .mghero-title {
@@ -191,22 +179,7 @@ permalink: /
 .stat-lbl { font-size: 0.72rem; color: rgba(240,232,216,0.45); text-transform: uppercase; letter-spacing: 0.08em; }
 
 /* Hero sağ — mozaik */
-.mghero-right { background: #12100c; position: relative; overflow: hidden; }
-.mghero-portrait-wrap {
-  width: 100%; height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.mghero-portrait {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  filter: brightness(0.88) sepia(0.08);
-  transition: filter .5s;
-}
-.mghero-portrait:hover { filter: brightness(0.95) sepia(0); }
+
 
 /* ── ORTAK SECTION ── */
 .mg-section { padding: 5rem 0; }
@@ -437,8 +410,7 @@ permalink: /
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .mghero { grid-template-columns: 1fr; }
-  .mghero-right { height: 280px; }
-  .mghero::after { display: none; }
+    .mghero::after { display: none; }
   .mghero-left { padding: 3rem 2rem; }
   .mg-bio-grid { grid-template-columns: 1fr; }
   .mg-portal-grid { grid-template-columns: 1fr; }
@@ -474,15 +446,7 @@ permalink: /
       <div><div class="stat-num">88</div><div class="stat-lbl">Biyografik</div></div>
       <div><div class="stat-num">53</div><div class="stat-lbl">Video</div></div>
     </div>
-  </div>
-  <div class="mghero-right" style="background:#12100c;overflow:hidden;">
-    <div class="mghero-portrait-wrap" style="width:100%;height:100%;overflow:hidden;">
-      <img class="mghero-portrait" style="width:100%;height:100%;object-fit:cover;object-position:center top;"
-        src="https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/solak_sm.jpg"
-        onerror="this.onerror=null;this.src='https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/dortsima_sm.jpg'"
-        alt="Mehmet Genç">
-    </div>
-  </div>
+  </div></div>
 </section>
 
 <!-- ════════ BİYOGRAFİ ════════ -->

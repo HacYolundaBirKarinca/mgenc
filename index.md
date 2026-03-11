@@ -62,13 +62,7 @@ permalink: /
   flex-direction: column;
   justify-content: center;
 }
-.mghero-eyebrow {
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gold-lt);
-  margin-bottom: 1.5rem;
-}
+
 .mghero-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(2.2rem, 4vw, 3.2rem);
@@ -78,12 +72,7 @@ permalink: /
   margin-bottom: 0.4rem;
 }
 .mghero-title em { font-style: italic; color: var(--gold-lt); }
-.mghero-name {
-  font-size: 1rem;
-  color: rgba(240,232,216,0.65);
-  margin-bottom: 1.8rem;
-  letter-spacing: 0.05em;
-}
+
 .mghero-bio {
   font-size: 1rem;
   color: rgba(240,232,216,0.8);
@@ -138,23 +127,21 @@ permalink: /
 
 /* Hero sağ — mozaik */
 .mghero-right { background: #12100c; position: relative; overflow: hidden; }
-.mghero-mosaic {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  height: 100%;
-  gap: 3px;
+.mghero-portrait-wrap {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
-.mosaic-cell { overflow: hidden; }
-.mosaic-cell.tall { grid-row: span 2; }
-.mosaic-cell.span2 { grid-column: span 2; }
-.mosaic-cell img {
+.mghero-portrait {
   width: 100%; height: 100%;
   object-fit: cover;
-  filter: brightness(0.82) sepia(0.1);
-  transition: filter .4s;
+  object-position: center top;
+  filter: brightness(0.88) sepia(0.08);
+  transition: filter .5s;
 }
-.mosaic-cell:hover img { filter: brightness(0.95) sepia(0); }
+.mghero-portrait:hover { filter: brightness(0.95) sepia(0); }
 
 /* ── ORTAK SECTION ── */
 .mg-section { padding: 5rem 0; }
@@ -403,11 +390,9 @@ permalink: /
 <!-- ════════ HERO ════════ -->
 <section class="mghero">
   <div class="mghero-left">
-    <div class="mghero-eyebrow">Dijital Biyografi · Osmanlı İktisat Tarihi</div>
     <h1 class="mghero-title">
       Hac Yolunda<br><em>Bir Karınca</em>
     </h1>
-    <p class="mghero-name">Mehmet Genç &nbsp;·&nbsp; Tarihçi</p>
     <p class="mghero-bio">
       <strong>Osmanlı iktisat tarihi</strong>nin en özgün seslerinden biri. Yarım asrı aşan akademik yolculuğunu, yazılı eserlerini, konferanslarını ve yaşamının izlerini bir araya getiren dijital koleksiyon.
     </p>
@@ -415,6 +400,8 @@ permalink: /
     <div class="mghero-cta">
       <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/browse.html" class="btn-gold">Koleksiyonu Keşfet →</a>
       <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/biyografi.html" class="btn-outline-light">Hayatını Oku</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/about.html" class="btn-outline-light">Portal Hakkında</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/katki.html" class="btn-outline-light">Siz de Paylaşın</a>
     </div>
     <div class="mghero-stats">
       <div><div class="stat-num">229</div><div class="stat-lbl">Akademik</div></div>
@@ -424,16 +411,11 @@ permalink: /
     </div>
   </div>
   <div class="mghero-right">
-    <div class="mghero-mosaic">
-      <div class="mosaic-cell tall">
-        <img src="https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/twitter2_sm.jpg" onerror="this.parentNode.style.background='#1a1410'" alt="Mehmet Genç">
-      </div>
-      <div class="mosaic-cell">
-        <img src="https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/twitter3_sm.jpg" onerror="this.parentNode.style.background='#1e1812'" alt="">
-      </div>
-      <div class="mosaic-cell">
-        <img src="https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/derin_sm.jpg" onerror="this.parentNode.style.background='#1c1610'" alt="">
-      </div>
+    <div class="mghero-portrait-wrap">
+      <img class="mghero-portrait"
+        src="https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/academia_sm.jpg"
+        onerror="this.src='https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/twitter2_sm.jpg'"
+        alt="Mehmet Genç">
     </div>
   </div>
 </section>
@@ -447,7 +429,7 @@ permalink: /
           <img src="https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/academia_sm.jpg"
                onerror="this.style.display='none'" alt="Mehmet Genç">
         </div>
-        <p class="mg-bio-caption">Prof. Dr. Mehmet Genç (1934–2021)</p>
+        <p class="mg-bio-caption" style="font-size:1rem;font-family:'Cormorant Garamond',serif;color:var(--rust);margin-top:0.8rem;">Mehmet Genç (1934–2021)</p>
       </div>
       <div>
         <div class="mg-section-label">Hayatı</div>
@@ -471,59 +453,12 @@ permalink: /
   </div>
 </section>
 
-<!-- ════════ PORTAL KAPILAR ════════ -->
-<section class="mg-section mg-portals mg-reveal">
-  <div class="mg-section-inner">
-    <div class="mg-section-label">Koleksiyon</div>
-    <h2 class="mg-section-title">Nereden Başlamak İstersiniz?</h2>
-    <p class="mg-section-sub">Koleksiyonu üç ana kapıdan keşfedebilirsiniz.</p>
-    <div class="mg-portal-grid">
-
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/browse.html" class="mg-portal-card">
-        <div class="mg-portal-icon">📚</div>
-        <div class="mg-portal-name">Akademik Üretim</div>
-        <p class="mg-portal-desc">Konferans bildirileri, makaleler, kitap bölümleri ve söyleşiler. Yarım asrın entelektüel birikimi.</p>
-        <div class="mg-portal-tags">
-          <span class="mg-portal-tag">Konferans & Bildiri</span>
-          <span class="mg-portal-tag">Yazılı Eserler</span>
-          <span class="mg-portal-tag">Röportaj & Söyleşi</span>
-        </div>
-        <div class="mg-portal-count"><span>229 kayıt</span><span class="mg-portal-arrow">→</span></div>
-      </a>
-
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/browse.html" class="mg-portal-card">
-        <div class="mg-portal-icon">🖼️</div>
-        <div class="mg-portal-name">Görsel Arşiv</div>
-        <p class="mg-portal-desc">Fotoğraflar ve video kayıtları. Çalıştaylar, dersler, söyleşiler ve özel anlar.</p>
-        <div class="mg-portal-tags">
-          <span class="mg-portal-tag">Fotoğraflar</span>
-          <span class="mg-portal-tag">Video Kayıtları</span>
-        </div>
-        <div class="mg-portal-count"><span>114 kayıt</span><span class="mg-portal-arrow">→</span></div>
-      </a>
-
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/browse.html" class="mg-portal-card">
-        <div class="mg-portal-icon">👤</div>
-        <div class="mg-portal-name">Biyografik</div>
-        <p class="mg-portal-desc">Aile arşivi, hayat hikâyesi, vefeyat yazıları ve anma metinleri.</p>
-        <div class="mg-portal-tags">
-          <span class="mg-portal-tag">Aile Arşivi</span>
-          <span class="mg-portal-tag">Hayat Hikâyesi</span>
-          <span class="mg-portal-tag">Vefeyat & Anma</span>
-        </div>
-        <div class="mg-portal-count"><span>88 kayıt</span><span class="mg-portal-arrow">→</span></div>
-      </a>
-
-    </div>
-  </div>
-</section>
-
 <!-- ════════ ZAMANÇİZGİSİ ════════ -->
 <section class="mg-section mg-timeline mg-reveal">
   <div class="mg-section-inner">
     <div class="mg-section-label">Kronoloji</div>
-    <h2 class="mg-section-title">Beş On Yılın İzinde</h2>
-    <p class="mg-section-sub">1970'lerden 2020'lere uzanan akademik yolculuğun öne çıkan durakları.</p>
+    <h2 class="mg-section-title">Kronolojiden Notlar</h2>
+    <p class="mg-section-sub">1970'lerden 2020'lere uzanan akademik yolculuktan öne çıkan anlar.</p>
 
     <div class="mg-tl-scroll" id="mgTimeline">
       <div class="mg-decade">
@@ -575,35 +510,53 @@ permalink: /
   </div>
 </section>
 
-<!-- ════════ KONULAR ════════ -->
-<section class="mg-section mg-topics mg-reveal">
+<!-- ════════ PORTAL KAPILAR ════════ -->
+<section class="mg-section mg-portals mg-reveal">
   <div class="mg-section-inner">
-    <div class="mg-section-label">Konular</div>
-    <h2 class="mg-section-title">Öne Çıkan Temalar</h2>
-    <p class="mg-section-sub">Koleksiyonda en sık karşılaşılan kavramlar ve izlekler.</p>
-    <div class="mg-topic-cloud">
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag large">İktisat</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag large">Konferans</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag medium">Tarihçilik</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag medium">Devlet</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag medium">Ticaret</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag medium">18. Yüzyıl</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag medium">Maliye</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Biyografi</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Vergi</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">İktisadi Düşünce</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Vakıflar</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Arşiv</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">19. Yüzyıl</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Kişiler</a>
-      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Sanayii</a>
+    <div class="mg-section-label">Koleksiyon</div>
+    <h2 class="mg-section-title">Nereden Başlamak İstersiniz?</h2>
+    <p class="mg-section-sub">Koleksiyonu üç ana kapıdan keşfedebilirsiniz.</p>
+    <div class="mg-portal-grid">
+
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/browse.html" class="mg-portal-card">
+        <div class="mg-portal-icon">📚</div>
+        <div class="mg-portal-name">Akademik Üretim</div>
+        <p class="mg-portal-desc">Konferans bildirileri, makaleler, kitap bölümleri ve söyleşiler. Yarım asrın entelektüel birikimi.</p>
+        <div class="mg-portal-tags">
+          <span class="mg-portal-tag">Konferans & Bildiri</span>
+          <span class="mg-portal-tag">Yazılı Eserler</span>
+          <span class="mg-portal-tag">Röportaj & Söyleşi</span>
+        </div>
+        <div class="mg-portal-count"><span>229 kayıt</span><span class="mg-portal-arrow">→</span></div>
+      </a>
+
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/browse.html" class="mg-portal-card">
+        <div class="mg-portal-icon">🖼️</div>
+        <div class="mg-portal-name">Görsel Arşiv</div>
+        <p class="mg-portal-desc">Fotoğraflar ve video kayıtları. Çalıştaylar, dersler, söyleşiler ve özel anlar.</p>
+        <div class="mg-portal-tags">
+          <span class="mg-portal-tag">Fotoğraflar</span>
+          <span class="mg-portal-tag">Video Kayıtları</span>
+        </div>
+        <div class="mg-portal-count"><span>114 kayıt</span><span class="mg-portal-arrow">→</span></div>
+      </a>
+
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/browse.html" class="mg-portal-card">
+        <div class="mg-portal-icon">👤</div>
+        <div class="mg-portal-name">Biyografik</div>
+        <p class="mg-portal-desc">Aile arşivi, hayat hikâyesi, vefeyat yazıları ve anma metinleri.</p>
+        <div class="mg-portal-tags">
+          <span class="mg-portal-tag">Aile Arşivi</span>
+          <span class="mg-portal-tag">Hayat Hikâyesi</span>
+          <span class="mg-portal-tag">Vefeyat & Anma</span>
+        </div>
+        <div class="mg-portal-count"><span>88 kayıt</span><span class="mg-portal-arrow">→</span></div>
+      </a>
+
     </div>
   </div>
-</section>
 
-<!-- ════════ VERİ ÖZET ════════ -->
-<section class="mg-section mg-data mg-reveal">
-  <div class="mg-section-inner">
+  <div class="mg-section-inner" style="margin-top:3rem;padding-top:3rem;border-top:1px solid var(--border)">
     <div class="mg-section-label">Koleksiyon Özeti</div>
     <h2 class="mg-section-title">442 Kayıt, Bir Ömür</h2>
     <div class="mg-data-grid">
@@ -629,29 +582,31 @@ permalink: /
       </a>
     </div>
   </div>
+</section><!-- ════════ KONULAR ════════ -->
+<section class="mg-section mg-topics mg-reveal">
+  <div class="mg-section-inner">
+    <div class="mg-section-label">Konular</div>
+    <h2 class="mg-section-title">Öne Çıkan Temalar</h2>
+    <p class="mg-section-sub">Koleksiyonda en sık karşılaşılan kavramlar ve izlekler.</p>
+    <div class="mg-topic-cloud">
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag large">İktisat</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag large">Konferans</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag medium">Tarihçilik</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag medium">Devlet</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag medium">Ticaret</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag medium">18. Yüzyıl</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag medium">Maliye</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Biyografi</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Vergi</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">İktisadi Düşünce</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Vakıflar</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Arşiv</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">19. Yüzyıl</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Kişiler</a>
+      <a href="https://hacyolundabirkarinca.github.io/koleksiyonum/subjects.html" class="mg-topic-tag small">Sanayii</a>
+    </div>
+  </div>
 </section>
 
+
 </div><!-- #mg-home -->
-
-<script>
-// Scroll-reveal
-(function(){
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.mg-reveal').forEach(el => obs.observe(el));
-
-  // Timeline yatay fare tekerleği
-  const tl = document.getElementById('mgTimeline');
-  if(tl){
-    tl.addEventListener('wheel', e => {
-      if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
-        e.preventDefault();
-        tl.scrollLeft += e.deltaY;
-      }
-    }, { passive: false });
-  }
-})();
-</script>

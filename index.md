@@ -4,21 +4,73 @@ layout: page
 permalink: /
 ---
 
-<style>
-/* ── CB page layout override ── */
-/* CB'nin h1 title'ını gizle */
-#maincontent > .container > h1,
-#maincontent > .container > .pb-3 { display: none !important; }
 
-/* Container'ı tam genişliğe aç */
-#maincontent > .container {
+<script>
+// CB carousel ve video yüklemesini durdur - sayfa başında çalışır
+(function(){
+  // Video elementlerinin autoplay/preload'ını engelle
+  document.addEventListener('DOMContentLoaded', function(){
+    // Tüm video ve source elementlerini bul ve durdur
+    document.querySelectorAll('video, video source').forEach(function(el){
+      el.src = ''; el.srcObject = null;
+      if(el.tagName === 'VIDEO'){ el.pause(); el.load(); }
+    });
+    // CB carousel'ı bul ve durdur
+    if(window.jQuery){
+      try { jQuery('#carousel').carousel('pause').carousel('dispose'); } catch(e){}
+      try { jQuery('.carousel').carousel('pause'); } catch(e){}
+    }
+    // CB'nin kendi home bileşenlerini gizle
+    var selectors = [
+      '#cb-home-featured', '.home-hero', '.home-about',
+      '.home-browse', '.home-timeline', '.home-subjects',
+      '.home-map', '.home-data', '#jumbotron', '.jumbotron',
+      '#carousel', '.carousel-item video'
+    ];
+    selectors.forEach(function(sel){
+      document.querySelectorAll(sel).forEach(function(el){
+        el.style.display = 'none';
+        // Video src'yi temizle
+        el.querySelectorAll('video').forEach(function(v){
+          v.pause(); v.src=''; v.load();
+        });
+      });
+    });
+  });
+  // Window load'dan önce de dene
+  window.addEventListener('load', function(){
+    document.querySelectorAll('video').forEach(function(v){
+      v.pause(); v.src = ''; v.load();
+    });
+  });
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── CB home-infographic override ── */
+/* CB'nin tüm home widget'larını gizle */
+#cb-home-featured,
+.home-hero, .home-about, .home-browse, .home-timeline,
+.home-subjects, .home-map, .home-data, .home-locations,
+#jumbotron, .jumbotron, .cb-featured-image,
+#homeHero, .hero-image-block,
+/* CB iki kolonlu grid layout */
+#maincontent .row:first-child,
+#maincontent .container > h1,
+#maincontent .container > .pb-3,
+/* Carousel */
+#carousel, .carousel { display: none !important; }
+
+/* Container'ı aç */
+#maincontent > .container,
+#maincontent > .container-fluid {
   max-width: 100% !important;
-  width: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: 0 !important;
 }
-#maincontent,
-#maincontent > .container > .row { padding: 0 !important; margin: 0 !important; }
 
 /* ═══════════════════════════════════════════
    MEHMET GENÇ — ANA SAYFA TASARIMI
@@ -50,13 +102,13 @@ permalink: /
 }
 
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+
 
 /* ── HERO ── */
 .mghero {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 80vh;
+  min-height: 85vh;
   position: relative;
   overflow: hidden;
 }
@@ -401,8 +453,8 @@ permalink: /
 <div id="mg-home">
 
 <!-- ════════ HERO ════════ -->
-<section class="mghero">
-  <div class="mghero-left">
+<section class="mghero" style="display:grid;grid-template-columns:1fr 1fr;min-height:85vh;overflow:hidden;position:relative;">
+  <div class="mghero-left" style="background:#18120c;padding:5rem 4rem 4rem;display:flex;flex-direction:column;justify-content:center;">
     <h1 class="mghero-title">
       Hac Yolunda<br><em>Bir Karınca</em>
     </h1>
@@ -423,11 +475,11 @@ permalink: /
       <div><div class="stat-num">53</div><div class="stat-lbl">Video</div></div>
     </div>
   </div>
-  <div class="mghero-right">
-    <div class="mghero-portrait-wrap">
-      <img class="mghero-portrait"
-        src="https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/academia_sm.jpg"
-        onerror="this.src='https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/twitter2_sm.jpg'"
+  <div class="mghero-right" style="background:#12100c;overflow:hidden;">
+    <div class="mghero-portrait-wrap" style="width:100%;height:100%;overflow:hidden;">
+      <img class="mghero-portrait" style="width:100%;height:100%;object-fit:cover;object-position:center top;"
+        src="https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/solak_sm.jpg"
+        onerror="this.onerror=null;this.src='https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/dortsima_sm.jpg'"
         alt="Mehmet Genç">
     </div>
   </div>
@@ -439,7 +491,7 @@ permalink: /
     <div class="mg-bio-grid">
       <div>
         <div class="mg-bio-portrait-frame">
-          <img src="https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/academia_sm.jpg"
+          <img src="https://hacyolundabirkarinca.github.io/koleksiyonum/assets/img/derivatives/square/solak_sm.jpg"
                onerror="this.style.display='none'" alt="Mehmet Genç">
         </div>
         <p class="mg-bio-caption" style="font-size:1rem;font-family:'Cormorant Garamond',serif;color:var(--rust);margin-top:0.8rem;">Mehmet Genç (1934–2021)</p>

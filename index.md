@@ -5,16 +5,20 @@ permalink: /
 ---
 
 <style>
-/* ── CB varsayılan içeriği gizle, tam genişlik ver ── */
-/* Page layout'ta CB otomatik h1 ve padding ekler */
-#maincontent h1:first-child { display: none !important; }
+/* ── CB page layout override ── */
+/* CB'nin h1 title'ını gizle */
+#maincontent > .container > h1,
+#maincontent > .container > .pb-3 { display: none !important; }
+
+/* Container'ı tam genişliğe aç */
 #maincontent > .container {
   max-width: 100% !important;
+  width: 100% !important;
   padding: 0 !important;
   margin: 0 !important;
 }
-#maincontent > .container > .row,
-#maincontent > .container > p:empty { display: none !important; }
+#maincontent,
+#maincontent > .container > .row { padding: 0 !important; margin: 0 !important; }
 
 /* ═══════════════════════════════════════════
    MEHMET GENÇ — ANA SAYFA TASARIMI
@@ -34,7 +38,16 @@ permalink: /
 }
 
 #mg-home * { box-sizing: border-box; }
-#mg-home { font-family: 'Crimson Pro', Georgia, serif; color: var(--ink); }
+#mg-home {
+  font-family: 'Crimson Pro', Georgia, serif;
+  color: var(--ink);
+  /* Bootstrap container'ının padding/max-width'ini kır */
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-top: -1rem;
+  width: calc(100% + 30px);
+  overflow-x: hidden;
+}
 
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap');

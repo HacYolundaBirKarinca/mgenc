@@ -1,6 +1,5 @@
 field,display_name,browse_link,external_link
 title,Başlık
-creator,Oluşturan
 date,Tarih,
 description,Açıklama,
 subject,Konular,true
@@ -13,5 +12,7 @@ type,Türü,
 format,Format,
 rights,Telif Hakkı/Linki,
 rightsstatement,Telif Link,,true
+creator,Oluşturan
+
 
 

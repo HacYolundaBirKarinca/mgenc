@@ -210,15 +210,12 @@ permalink: /browse.html
   background: var(--parchment);
   display: block;
 }
-.kcard-img-placeholder {
-  width: 100%;
-  aspect-ratio: 1;
-  background: var(--parchment);
+/* Görseli olan kartlar kare, olmayanlar metin kartı */
+.kcard-text {
+  padding: 14px 12px 10px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  color: var(--gold);
+  flex-direction: column;
+  min-height: 120px;
 }
 .kcard-body {
   padding: 8px 10px;
@@ -534,31 +531,42 @@ function makeCard(it){
   a.href = it.url || '#';
   a.title = it.title;
 
-  // Thumbnail
-  let imgHtml = '';
-  if(it.youtubeid){
-    imgHtml = `<img class="kcard-img" src="https://img.youtube.com/vi/${it.youtubeid}/mqdefault.jpg"
-      alt="${it.title}" loading="lazy" onerror="this.parentNode.innerHTML=thumbFallback('🎬')">`;
-  } else if(it.filename){
-    const sq = it.filename.replace(/\.[^.]+$/, '') + '_sm.jpg';
-    imgHtml = `<img class="kcard-img" src="${IMG_BASE}${sq}"
-      alt="${it.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling&&(this.nextElementSibling.style.display='flex')">
-      <div class="kcard-img-placeholder" style="display:none">${TYPE_ICON[it.type]||'📁'}</div>`;
-  } else {
-    imgHtml = `<div class="kcard-img-placeholder">${TYPE_ICON[it.type]||'📁'}</div>`;
-  }
-
-  // Badge rengi
+  // Badge
   const badgeCls = TYPE_BADGE[it.type] || 'badge-diger';
   const badgeLabel = it.type || 'Diğer';
 
-  a.innerHTML = `
-    ${imgHtml}
-    <div class="kcard-body">
-      <span class="kcard-badge ${badgeCls}">${badgeLabel}</span>
-      <div class="kcard-title">${it.title}</div>
-      <div class="kcard-meta">${it.date || ''}${it.location ? ' · ' + it.location.split(',')[0] : ''}</div>
-    </div>`;
+  if(it.youtubeid){
+    // YouTube → thumbnail göster
+    a.innerHTML = `
+      <img class="kcard-img" src="https://img.youtube.com/vi/${it.youtubeid}/mqdefault.jpg"
+        alt="${it.title}" loading="lazy"
+        onerror="this.remove()">
+      <div class="kcard-body">
+        <span class="kcard-badge ${badgeCls}">${badgeLabel}</span>
+        <div class="kcard-title">${it.title}</div>
+        <div class="kcard-meta">${it.date || ''}${it.location ? ' · ' + it.location.split(',')[0] : ''}</div>
+      </div>`;
+  } else if(it.filename){
+    // Dosya → thumbnail dene, hata varsa sade metin kart
+    const sq = it.filename.replace(/\.[^.]+$/, '') + '_sm.jpg';
+    a.innerHTML = `
+      <img class="kcard-img" src="${IMG_BASE}${sq}"
+        alt="${it.title}" loading="lazy"
+        onerror="this.remove()">
+      <div class="kcard-body">
+        <span class="kcard-badge ${badgeCls}">${badgeLabel}</span>
+        <div class="kcard-title">${it.title}</div>
+        <div class="kcard-meta">${it.date || ''}${it.location ? ' · ' + it.location.split(',')[0] : ''}</div>
+      </div>`;
+  } else {
+    // Görsel yok → sade metin kart, resim alanı hiç yok
+    a.innerHTML = `
+      <div class="kcard-text">
+        <span class="kcard-badge ${badgeCls}">${badgeLabel}</span>
+        <div class="kcard-title" style="-webkit-line-clamp:5">${it.title}</div>
+        <div class="kcard-meta" style="margin-top:auto;padding-top:8px">${it.date || ''}${it.location ? ' · ' + it.location.split(',')[0] : ''}</div>
+      </div>`;
+  }
   return a;
 }
 

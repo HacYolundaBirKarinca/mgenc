@@ -10,5 +10,5 @@ cloud-fields: site.data.theme.locations-fields
 
 ## Yerlere Göz At
 
-Bu kelime bulutu görselleştirmesini kullanarak konumları tarayın.
-Kelime boyutu sıklığa göre belirlenir ve tüm kelimeler ilgili koleksiyon aramasına bağlanır.
+Bu kelime bulutu görselleştirmesini kullanarak katalogta yer alan konumları tarayın.
+Kelime boyutu, konumların sıklığına göre belirlenir ve tüm kelimeler ilgili koleksiyon aramasına bağlanır.

@@ -7,16 +7,19 @@ permalink: /
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-/* ── CB page layout override ── */
-/* CB page layout'ta sadece h1 title ve container var, carousel yok */
+/* ── CB override ── */
 #maincontent > .container > h1,
 #maincontent > .container > h2:first-child { display: none !important; }
-
 #maincontent > .container {
   max-width: 100% !important;
   padding: 0 !important;
   margin: 0 !important;
 }
+/* CB site başlığı ("Hac Yolunda..." + "Dijital Biyografi") bölümünü gizle */
+#site-title, .site-title-section, header.site-header,
+.jumbotron.py-3, #jumbotron,
+main > div > .jumbotron,
+body > header { display: none !important; }
 
 /* ═══════════════════════════════════════════
    MEHMET GENÇ — ANA SAYFA TASARIMI
@@ -373,7 +376,7 @@ permalink: /
 
 <!-- ════════ HERO ════════ -->
 <section class="mghero" style="display:grid;grid-template-columns:1fr 1fr;min-height:85vh;overflow:hidden;position:relative;">
-  <div class="mghero-left" style="background:#18120c;padding:5rem 4rem 4rem;display:flex;flex-direction:column;justify-content:center;">
+  <div class="mghero-left" style="background:#18120c;padding:2.5rem 3rem 3rem;display:flex;flex-direction:column;justify-content:center;">
     <h1 class="mghero-title">
       Hac Yolunda<br><em>Bir Karınca</em>
     </h1>
@@ -393,7 +396,13 @@ permalink: /
       <div><div class="stat-num">88</div><div class="stat-lbl">Biyografik</div></div>
       <div><div class="stat-num">53</div><div class="stat-lbl">Video</div></div>
     </div>
-  </div></div>
+  </div>
+  <div style="background:#0e0c09;overflow:hidden;border-left:1px solid rgba(201,168,76,0.15);">
+    <img
+      src="https://hacyolundabirkarinca.github.io/koleksiyonum/objects/dunyabizim3.jpg"
+      alt="Mehmet Genç"
+      style="width:100%;height:100%;object-fit:cover;object-position:center top;opacity:0.9;display:block;">
+  </div>
 </section>
 
 <!-- ════════ BİYOGRAFİ ════════ -->

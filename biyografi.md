@@ -82,7 +82,7 @@ Mehmet Genç 18 Mart 2021 tarihinde 87 yaşında iken vefat etmiştir. Fatih Cam
 
 **Yayınlar**
 
-Hocamızın yayınlarına (kitap, makale, ansiklopedi maddesi) site içerisinden şu linke tıklayarak ulaşabilirsiniz: [Mehmet Genç Eserleri](https://hacyolundabirkarinca.github.io/koleksiyonum/browse.html#Eserleri)
+Hocamızın yayınlarına (kitap, makale, ansiklopedi maddesi) site içerisinden şu linke tıklayarak ulaşabilirsiniz: [Mehmet Genç Eserleri](https://hacyolundabirkarinca.github.io/mgenc/browse.html#Eserleri)
 
 **Ödüller**
 

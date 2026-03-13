@@ -20,7 +20,7 @@ Kitle kaynak usulüyle (crowdsourcing) yani herkesin katkısı ile zenginleşece
 Bu sürece dahil olan tüm isimleri kısaca 'Mehmet Genç Gönüllüleri' olarak adlandırıyoruz. Şimdiye kadar emeği geçen ve bundan sonra da katkı sunacak olan tüm Mehmet Genç Gönüllülerine şükranlarımızla...
 
 İletişim ve Katkı: 
-Mehmet Hoca ile ilgili hatıra, belge veya görsel arşivinizi/begenizi paylaşmak isterseniz [PAYLAŞ](https://hacyolundabirkarinca.github.io/koleksiyonum/katki.html) menüsünden bize ulaştırabilirsiniz.
+Mehmet Hoca ile ilgili hatıra, belge veya görsel arşivinizi/begenizi paylaşmak isterseniz [PAYLAŞ](https://hacyolundabirkarinca.github.io/mgenc/katki.html) menüsünden bize ulaştırabilirsiniz.
 
 Web sitesindeki verilerle ilgili düzeltme önerilerinizi veya görüşlerinizi de aynı yerden iletebilirsiniz; bildirimleriniz en kısa sürede değerlendirilerek sisteme yansıtılacaktır. 
 

@@ -357,7 +357,7 @@ body > header { display: none !important; }
 
 /* reveal devre dışı */
 
-/* ── HERO FOTOĞRAF CROSSFADE ── */
+/* ── HERO FOTOĞRAF CROSSFADE (5 fotoğraf) ── */
 .mghero-photo-wrap {
   position: relative;
   background: #0e0c09;
@@ -372,27 +372,20 @@ body > header { display: none !important; }
   object-fit: cover;
   object-position: center top;
   display: block;
-}
-.photo-a {
-  opacity: 1;
-  animation: fadeAB 12s ease-in-out infinite;
-}
-.photo-b {
   opacity: 0;
-  animation: fadeBA 12s ease-in-out infinite;
 }
-@keyframes fadeAB {
-  0%   { opacity: 1; }
-  40%  { opacity: 1; }
-  50%  { opacity: 0; }
-  90%  { opacity: 0; }
-  100% { opacity: 1; }
-}
-@keyframes fadeBA {
+/* Her fotoğraf 25s döngüde 5s görünür, 1s geçiş */
+/* Sıra: p1 → p2 → p3 → p4 → p5 → p1 ... */
+.photo-1 { animation: fade5 25s 0s  infinite; }
+.photo-2 { animation: fade5 25s 5s  infinite; }
+.photo-3 { animation: fade5 25s 10s infinite; }
+.photo-4 { animation: fade5 25s 15s infinite; }
+.photo-5 { animation: fade5 25s 20s infinite; }
+@keyframes fade5 {
   0%   { opacity: 0; }
-  40%  { opacity: 0; }
-  50%  { opacity: 1; }
-  90%  { opacity: 1; }
+  4%   { opacity: 1; }
+  20%  { opacity: 1; }
+  24%  { opacity: 0; }
   100% { opacity: 0; }
 }
 
@@ -447,12 +440,21 @@ body > header { display: none !important; }
     </div>
   </div>
   <div class="mghero-photo-wrap">
-    <img class="mghero-photo photo-a"
+    <img class="mghero-photo photo-1"
       src="https://hacyolundabirkarinca.github.io/koleksiyonum/objects/dunyabizim3.jpg"
       alt="Mehmet Genç">
-    <img class="mghero-photo photo-b"
+    <img class="mghero-photo photo-2"
       src="https://hacyolundabirkarinca.github.io/koleksiyonum/objects/kenanyildiz.jpg"
       alt="Mehmet Genç arşivde">
+    <img class="mghero-photo photo-3"
+      src="https://hacyolundabirkarinca.github.io/koleksiyonum/objects/yedikıta.jpg"
+      alt="Mehmet Genç kitaplığında">
+    <img class="mghero-photo photo-4"
+      src="https://hacyolundabirkarinca.github.io/koleksiyonum/objects/odessa2.jpg"
+      alt="Mehmet Genç Odessa'da">
+    <img class="mghero-photo photo-5"
+      src="https://hacyolundabirkarinca.github.io/koleksiyonum/objects/sakul.jpg"
+      alt="Mehmet Genç çalışırken">
   </div>
 </section>
 

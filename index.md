@@ -357,11 +357,60 @@ body > header { display: none !important; }
 
 /* reveal devre dışı */
 
+/* ── HERO FOTOĞRAF CROSSFADE ── */
+.mghero-photo-wrap {
+  position: relative;
+  background: #0e0c09;
+  overflow: hidden;
+  border-left: 1px solid rgba(201,168,76,0.15);
+}
+.mghero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.photo-a {
+  opacity: 1;
+  animation: fadeAB 12s ease-in-out infinite;
+}
+.photo-b {
+  opacity: 0;
+  animation: fadeBA 12s ease-in-out infinite;
+}
+@keyframes fadeAB {
+  0%   { opacity: 1; }
+  40%  { opacity: 1; }
+  50%  { opacity: 0; }
+  90%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes fadeBA {
+  0%   { opacity: 0; }
+  40%  { opacity: 0; }
+  50%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .mghero { grid-template-columns: 1fr; }
-    .mghero::after { display: none; }
-  .mghero-left { padding: 3rem 2rem; }
+  .mghero {
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+  }
+  .mghero-left {
+    padding: 2rem 1.5rem 2rem !important;
+  }
+  .mghero-photo-wrap {
+    height: 280px;
+    border-left: none !important;
+    border-top: 1px solid rgba(201,168,76,0.15);
+  }
+  .mghero-photo { object-position: center 20%; }
   .mg-bio-grid { grid-template-columns: 1fr; }
   .mg-portal-grid { grid-template-columns: 1fr; }
   .mg-data-grid { grid-template-columns: repeat(2,1fr); }
@@ -397,11 +446,13 @@ body > header { display: none !important; }
       <div><div class="stat-num">53</div><div class="stat-lbl">Video</div></div>
     </div>
   </div>
-  <div style="background:#0e0c09;overflow:hidden;border-left:1px solid rgba(201,168,76,0.15);">
-    <img
+  <div class="mghero-photo-wrap">
+    <img class="mghero-photo photo-a"
       src="https://hacyolundabirkarinca.github.io/koleksiyonum/objects/dunyabizim3.jpg"
-      alt="Mehmet Genç"
-      style="width:100%;height:100%;object-fit:cover;object-position:center top;opacity:0.9;display:block;">
+      alt="Mehmet Genç">
+    <img class="mghero-photo photo-b"
+      src="https://hacyolundabirkarinca.github.io/koleksiyonum/objects/kenanyildiz.jpg"
+      alt="Mehmet Genç arşivde">
   </div>
 </section>
 

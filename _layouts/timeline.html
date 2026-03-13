@@ -37,40 +37,80 @@ custom-foot: js/timeline-js.html
 {%- endif -%}
 
 <style>
-.tl-badge {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 2px 7px;
-  border-radius: 3px;
-  margin-bottom: 3px;
-}
-.tl-card {
+/* Genel kart stili */
+.tl-item {
   display: block;
-  padding: 7px 10px;
-  border-left: 3px solid #ccc;
   text-decoration: none;
   color: #333;
   font-size: 0.82rem;
   line-height: 1.4;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+}
+.tl-item:hover { text-decoration: none; color: #111; }
+
+/* Metin kartı (konferans, makale vb.) */
+.tl-card {
+  padding: 7px 10px;
+  border-left: 3px solid #ccc;
   background: #fafafa;
 }
-.tl-card:hover { text-decoration: none; color: #111; background: #f0f0f0; }
+.tl-card:hover { background: #f0f0f0; }
+
+/* Fotoğraf/video kartı */
+.tl-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+}
+.tl-media img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  border-radius: 3px;
+  filter: brightness(0.88);
+  transition: filter .2s;
+}
+.tl-media:hover img { filter: brightness(1); }
+.tl-media-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.72));
+  color: #fff;
+  font-size: 0.72rem;
+  padding: 14px 7px 5px;
+  line-height: 1.3;
+}
+.tl-media-caption .tl-badge {
+  display: inline-block;
+  margin-bottom: 2px;
+}
+
+/* Etiketler */
+.tl-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+/* Renk sınıfları */
+.tl-konferans .tl-badge, .tl-badge-konferans { background: #e07b2a; color: #fff; }
+.tl-seminer   .tl-badge, .tl-badge-seminer   { background: #7c5cbf; color: #fff; }
+.tl-calistay  .tl-badge, .tl-badge-calistay  { background: #2a9e6e; color: #fff; }
+.tl-soylesi   .tl-badge, .tl-badge-soylesi   { background: #2a6eb5; color: #fff; }
+.tl-dokuman   .tl-badge, .tl-badge-dokuman   { background: #777;    color: #fff; }
+.tl-fotograf  .tl-badge, .tl-badge-fotograf  { background: #5a8a5a; color: #fff; }
+.tl-video     .tl-badge, .tl-badge-video     { background: #a03030; color: #fff; }
+.tl-diger     .tl-badge, .tl-badge-diger     { background: #b5a080; color: #fff; }
+
 .tl-konferans { border-color: #e07b2a; }
-.tl-konferans .tl-badge { background: #e07b2a; color: #fff; }
 .tl-seminer   { border-color: #7c5cbf; }
-.tl-seminer .tl-badge   { background: #7c5cbf; color: #fff; }
 .tl-calistay  { border-color: #2a9e6e; }
-.tl-calistay .tl-badge  { background: #2a9e6e; color: #fff; }
 .tl-soylesi   { border-color: #2a6eb5; }
-.tl-soylesi .tl-badge   { background: #2a6eb5; color: #fff; }
-.tl-dokuman   { border-color: #888; }
-.tl-dokuman .tl-badge   { background: #888; color: #fff; }
+.tl-dokuman   { border-color: #777; }
 .tl-diger     { border-color: #b5a080; }
-.tl-diger .tl-badge     { background: #b5a080; color: #fff; }
 </style>
 
 {{ content }}
@@ -83,54 +123,60 @@ custom-foot: js/timeline-js.html
         <tr id="y{{ year }}">
             <th><h3>{{ year }}</h3></th>
             <td>
-                <div class="row">
+                <div class="row g-2">
                     {%- assign inYear = items | where_exp: 'item', 'item[field] contains year' -%}
                     {% for item in inYear %}
                     {%- assign subj = item.subject | downcase -%}
-                    <div class="col-lg-4 col-md-6 mb-2">
+                    <div class="col-lg-4 col-md-6">
 
                     {%- if item.youtubeid -%}
-                        {{- '<!-- youtube -->' -}}
-                        <a href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
-                            <img class="lazyload img-thumbnail timeline-thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3C/svg%3E" data-src="https://img.youtube.com/vi/{{ item.youtubeid }}/hqdefault.jpg" alt="{{ item.title | escape }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ item.title | escape }} | {{ item.date | escape }}">
+                        <a class="tl-item tl-media" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                            <img class="lazyload" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3C/svg%3E" data-src="https://img.youtube.com/vi/{{ item.youtubeid }}/hqdefault.jpg" alt="{{ item.title | escape }}">
+                            <div class="tl-media-caption">
+                                <span class="tl-badge tl-badge-video">▶ Video</span><br>
+                                {{ item.title | truncate: 60 }}
+                            </div>
                         </a>
 
                     {%- elsif item.format contains 'image' -%}
                         {%- if subj contains 'konferans' or subj contains 'bildiri' -%}
-                        <a class="tl-card tl-konferans" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                        <a class="tl-item tl-card tl-konferans" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
                             <span class="tl-badge">Konferans</span><br>{{ item.title }}
                         </a>
                         {%- elsif subj contains 'seminer' -%}
-                        <a class="tl-card tl-seminer" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                        <a class="tl-item tl-card tl-seminer" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
                             <span class="tl-badge">Seminer</span><br>{{ item.title }}
                         </a>
                         {%- elsif subj contains 'sempozyum' or subj contains 'çalıştay' -%}
-                        <a class="tl-card tl-calistay" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                        <a class="tl-item tl-card tl-calistay" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
                             <span class="tl-badge">Sempozyum</span><br>{{ item.title }}
                         </a>
                         {%- elsif subj contains 'söyleşi' or subj contains 'röportaj' -%}
-                        <a class="tl-card tl-soylesi" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                        <a class="tl-item tl-card tl-soylesi" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
                             <span class="tl-badge">Söyleşi</span><br>{{ item.title }}
                         </a>
                         {%- else -%}
-                        {{- '<!-- gerçek fotoğraf -->' -}}
-                        <a href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
-                            <img class="lazyload img-thumbnail timeline-thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3C/svg%3E" data-src="{% if item.filename contains '/' %}{{ item.filename }}{% else %}{{ '/objects/' | relative_url }}{{ item.filename }}{% endif %}" alt="{{ item.title | escape }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ item.title | escape }} | {{ item.date | escape }}">
+                        <a class="tl-item tl-media tl-fotograf" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                            <img class="lazyload" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E" data-src="{% if item.filename contains '/' %}{{ item.filename }}{% else %}{{ '/objects/' | relative_url }}{{ item.filename }}{% endif %}" alt="{{ item.title | escape }}">
+                            <div class="tl-media-caption">
+                                <span class="tl-badge tl-badge-fotograf">Fotoğraf</span><br>
+                                {{ item.title | truncate: 60 }}
+                            </div>
                         </a>
                         {%- endif -%}
 
                     {%- elsif item.format contains 'pdf' -%}
-                        <a class="tl-card tl-dokuman" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                        <a class="tl-item tl-card tl-dokuman" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
                             <span class="tl-badge">Makale / PDF</span><br>{{ item.title }}
                         </a>
 
                     {%- elsif subj contains 'söyleşi' or subj contains 'röportaj' -%}
-                        <a class="tl-card tl-soylesi" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                        <a class="tl-item tl-card tl-soylesi" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
                             <span class="tl-badge">Söyleşi</span><br>{{ item.title }}
                         </a>
 
                     {%- else -%}
-                        <a class="tl-card tl-diger" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                        <a class="tl-item tl-card tl-diger" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
                             <span class="tl-badge">Kayıt</span><br>{{ item.title }}
                         </a>
                     {%- endif -%}

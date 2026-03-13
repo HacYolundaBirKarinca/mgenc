@@ -36,6 +36,43 @@ custom-foot: js/timeline-js.html
 </div>
 {%- endif -%}
 
+<style>
+.tl-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-bottom: 3px;
+}
+.tl-card {
+  display: block;
+  padding: 7px 10px;
+  border-left: 3px solid #ccc;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  margin-bottom: 2px;
+  background: #fafafa;
+}
+.tl-card:hover { text-decoration: none; color: #111; background: #f0f0f0; }
+.tl-konferans { border-color: #e07b2a; }
+.tl-konferans .tl-badge { background: #e07b2a; color: #fff; }
+.tl-seminer   { border-color: #7c5cbf; }
+.tl-seminer .tl-badge   { background: #7c5cbf; color: #fff; }
+.tl-calistay  { border-color: #2a9e6e; }
+.tl-calistay .tl-badge  { background: #2a9e6e; color: #fff; }
+.tl-soylesi   { border-color: #2a6eb5; }
+.tl-soylesi .tl-badge   { background: #2a6eb5; color: #fff; }
+.tl-dokuman   { border-color: #888; }
+.tl-dokuman .tl-badge   { background: #888; color: #fff; }
+.tl-diger     { border-color: #b5a080; }
+.tl-diger .tl-badge     { background: #b5a080; color: #fff; }
+</style>
+
 {{ content }}
 
 <h3><a href="#y{{ uniqueYears | first }}">{{ uniqueYears | first }}</a> - <a href="#y{{ uniqueYears | last }}">{{ uniqueYears | last }}</a></h3>
@@ -44,21 +81,60 @@ custom-foot: js/timeline-js.html
     <tbody>
         {% for year in uniqueYears %}
         <tr id="y{{ year }}">
-            <th>
-                <h3>{{ year }}</h3>
-            </th>
+            <th><h3>{{ year }}</h3></th>
             <td>
                 <div class="row">
                     {%- assign inYear = items | where_exp: 'item', 'item[field] contains year' -%}
                     {% for item in inYear %}
+                    {%- assign subj = item.subject | downcase -%}
                     <div class="col-lg-4 col-md-6 mb-2">
-                        <a href="{% if item.parentid == nil %}{{ '/item.html' | relative_url | append: '?id=' | append: item.objectid }}{% elsif item.parentid %}{{ '/item.html' | relative_url | append: '?id=' | append: item.parentid | relative_url }}#{{ item.objectid }}{% endif %}">
-                            {% if item.format contains 'image' or item.youtubeid %}
-                            <img class="lazyload img-thumbnail timeline-thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3C/svg%3E" data-src="{% if item.youtubeid %}{{ 'https://img.youtube.com/vi/' | append: item.youtubeid | append: '/hqdefault.jpg' | relative_url }}{% elsif item.filename contains '/' %}{{ item.filename }}{% else %}{{ item.filename | prepend: '/objects/' | relative_url }}{% endif %}" alt="{{ item.title | escape }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ item.title | escape }} | {{ item.date | escape }}">
-                            {% else %}
-                            <span class="small text-dark">{{ item.title }}</span>
-                            {% endif %}
+
+                    {%- if item.youtubeid -%}
+                        {{- '<!-- youtube -->' -}}
+                        <a href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                            <img class="lazyload img-thumbnail timeline-thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3C/svg%3E" data-src="https://img.youtube.com/vi/{{ item.youtubeid }}/hqdefault.jpg" alt="{{ item.title | escape }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ item.title | escape }} | {{ item.date | escape }}">
                         </a>
+
+                    {%- elsif item.format contains 'image' -%}
+                        {%- if subj contains 'konferans' or subj contains 'bildiri' -%}
+                        <a class="tl-card tl-konferans" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                            <span class="tl-badge">Konferans</span><br>{{ item.title }}
+                        </a>
+                        {%- elsif subj contains 'seminer' -%}
+                        <a class="tl-card tl-seminer" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                            <span class="tl-badge">Seminer</span><br>{{ item.title }}
+                        </a>
+                        {%- elsif subj contains 'sempozyum' or subj contains 'çalıştay' -%}
+                        <a class="tl-card tl-calistay" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                            <span class="tl-badge">Sempozyum</span><br>{{ item.title }}
+                        </a>
+                        {%- elsif subj contains 'söyleşi' or subj contains 'röportaj' -%}
+                        <a class="tl-card tl-soylesi" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                            <span class="tl-badge">Söyleşi</span><br>{{ item.title }}
+                        </a>
+                        {%- else -%}
+                        {{- '<!-- gerçek fotoğraf -->' -}}
+                        <a href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                            <img class="lazyload img-thumbnail timeline-thumb" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3C/svg%3E" data-src="{% if item.filename contains '/' %}{{ item.filename }}{% else %}{{ '/objects/' | relative_url }}{{ item.filename }}{% endif %}" alt="{{ item.title | escape }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ item.title | escape }} | {{ item.date | escape }}">
+                        </a>
+                        {%- endif -%}
+
+                    {%- elsif item.format contains 'pdf' -%}
+                        <a class="tl-card tl-dokuman" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                            <span class="tl-badge">Makale / PDF</span><br>{{ item.title }}
+                        </a>
+
+                    {%- elsif subj contains 'söyleşi' or subj contains 'röportaj' -%}
+                        <a class="tl-card tl-soylesi" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                            <span class="tl-badge">Söyleşi</span><br>{{ item.title }}
+                        </a>
+
+                    {%- else -%}
+                        <a class="tl-card tl-diger" href="{{ '/item.html' | relative_url }}?id={{ item.objectid }}">
+                            <span class="tl-badge">Kayıt</span><br>{{ item.title }}
+                        </a>
+                    {%- endif -%}
+
                     </div>
                     {% endfor %}
                 </div>

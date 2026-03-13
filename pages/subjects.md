@@ -10,5 +10,5 @@ cloud-fields: site.data.theme.subjects-fields
 
 ## Konulara Göz At
 
-Bu kelime bulutu görselleştirmesini kullanarak terimleri ve konuları tarayın.
-Kelime boyutu sıklığa göre belirlenir ve tüm kelimeler ilgili koleksiyon aramasına bağlanır.
+Bu kelime bulutu görselleştirmesini kullanarak katalog kayıtlarında geçen terimleri ve konuları tarayın.
+Kelime boyutu, terimlerin sıklığa göre belirlenir ve tüm kelimeler ilgili koleksiyon aramasına bağlanır.

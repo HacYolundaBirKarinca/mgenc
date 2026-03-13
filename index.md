@@ -447,7 +447,7 @@ body > header { display: none !important; }
       src="https://hacyolundabirkarinca.github.io/mgenc/objects/kenanyildiz.jpg"
       alt="Mehmet Genç arşivde">
     <img class="mghero-photo photo-3"
-      src="https://hacyolundabirkarinca.github.io/mgenc/objects/yedikita.jpg"
+      src="https://hacyolundabirkarinca.github.io/mgenc/objects/yedikıta.jpg"
       alt="Mehmet Genç kitaplığında">
     <img class="mghero-photo photo-4"
       src="https://hacyolundabirkarinca.github.io/mgenc/objects/odessa2.jpg"
